@@ -61,7 +61,7 @@ Sistema web progresivo (PWA) para gestión de pedidos de modistería que permite
                    │ TypeORM
                    │
 ┌──────────────────▼──────────────────────────┐
-│         Supabase PostgreSQL                 │
+│         Supabase PostgreSQL (Cloud)         │
 │  - Tablas                                   │
 │  - Relaciones                               │
 │  - Triggers                                 │
@@ -178,6 +178,9 @@ Sistema web progresivo (PWA) para gestión de pedidos de modistería que permite
 │ created_at      │
 └─────────────────┘
 ```
+
+### 4.2 Esquema de Base de Datos (Referencial)
+> **Nota:** La estructura de tablas es gestionada automáticamente por TypeORM (Code-First) sincronizado con Supabase. Los scripts a continuación son solo de referencia. Los Triggers deben ejecutarse manualmente en el SQL Editor de Supabase.
 
 ### 4.2 Esquema de Base de Datos (SQL)
 
@@ -828,7 +831,7 @@ export const environment = {
 - **npm** o **yarn**
 - **Angular CLI**: `npm install -g @angular/cli`
 - **NestJS CLI**: `npm install -g @nestjs/cli`
-- **PostgreSQL**: Cuenta en Supabase
+- **Supabase**: Cuenta y proyecto activo (no requiere PostgreSQL local)
 - **Git**: Control de versiones
 
 ### 10.2 Instalación Backend
@@ -896,9 +899,10 @@ ng g c features/admin/dashboard
 
 ```sql
 -- 1. Crear proyecto en https://supabase.com
--- 2. Obtener credenciales de conexión
--- 3. Ejecutar el script SQL del apartado 4.2
--- 4. Configurar Row Level Security (RLS) si es necesario
+-- 2. Ir a Project Settings -> Database -> Connection Pooler
+-- 3. Copiar las credenciales (Host: aws-0-us-west-1.pooler.supabase.com, Port: 6543)
+-- 4. Actualizar el archivo .env con estas credenciales
+-- 5. Ejecutar el script `db/init_triggers.sql` en el SQL Editor de Supabase
 
 -- Ejemplo de configuración RLS (opcional)
 ALTER TABLE pedidos ENABLE ROW LEVEL SECURITY;

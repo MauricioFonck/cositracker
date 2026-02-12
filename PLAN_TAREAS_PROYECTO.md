@@ -3,27 +3,27 @@
 ## Fase 1: Configuración Inicial y Fundamentos
 
 ### 1.1 Configuración del Entorno de Desarrollo
-- [ ] Instalar Node.js v18+ o v20+
-- [ ] Instalar Angular CLI globalmente
-- [ ] Instalar NestJS CLI globalmente
+- [x] Instalar Node.js v18+ o v20+
+- [x] Instalar Angular CLI globalmente
+- [x] Instalar NestJS CLI globalmente
 - [X] Configurar Git y crear repositorio del proyecto
-- [ ] Crear cuenta en Supabase para la base de datos PostgreSQL
+- [X] Crear cuenta en Supabase para la base de datos PostgreSQL
 
 ### 1.2 Configuración de la Base de Datos
-- [ ] Crear proyecto en Supabase
-- [ ] Ejecutar script SQL para crear todas las tablas (clientes, pedidos, abonos, admins)
-- [ ] Crear índices para optimización de consultas
-- [ ] Configurar triggers para actualización automática de saldo pendiente
+- [X] Crear proyecto en Supabase
+- [X] Ejecutar script SQL para crear todas las tablas (clientes, pedidos, abonos, admins) - *Realizado vía TypeORM Code-First*
+- [X] Crear índices para optimización de consultas - *Definidos en Entidades*
+- [X] Configurar triggers para actualización automática de saldo pendiente - *Script SQL generado en db/init_triggers.sql*
 - [ ] **TEST:** Probar conexión a la base de datos
 - [ ] **TEST:** Verificar que las tablas se crearon correctamente
 - [ ] **TEST:** Probar que el trigger de saldo pendiente funciona insertando un abono de prueba
 
 ### 1.3 Configuración del Backend (NestJS)
-- [ ] Crear proyecto NestJS
-- [ ] Instalar dependencias necesarias (TypeORM, Passport, JWT, bcrypt, class-validator)
-- [ ] Configurar archivo de variables de entorno (.env)
-- [ ] Configurar conexión a base de datos con TypeORM
-- [ ] Configurar CORS para permitir peticiones del frontend
+- [X] Crear proyecto NestJS
+- [X] Instalar dependencias necesarias (TypeORM, Passport, JWT, bcrypt, class-validator)
+- [X] Configurar archivo de variables de entorno (.env)
+- [X] Configurar conexión a base de datos con TypeORM
+- [X] Configurar CORS para permitir peticiones del frontend
 - [ ] **TEST:** Ejecutar proyecto y verificar que inicia sin errores
 - [ ] **TEST:** Verificar conexión exitosa a la base de datos
 
