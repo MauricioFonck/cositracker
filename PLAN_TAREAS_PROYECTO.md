@@ -1,0 +1,503 @@
+# 📋 Plan de Tareas del Proyecto - Sistema de Gestión de Pedidos
+
+## Fase 1: Configuración Inicial y Fundamentos
+
+### 1.1 Configuración del Entorno de Desarrollo
+- [ ] Instalar Node.js v18+ o v20+
+- [ ] Instalar Angular CLI globalmente
+- [ ] Instalar NestJS CLI globalmente
+- [X] Configurar Git y crear repositorio del proyecto
+- [ ] Crear cuenta en Supabase para la base de datos PostgreSQL
+
+### 1.2 Configuración de la Base de Datos
+- [ ] Crear proyecto en Supabase
+- [ ] Ejecutar script SQL para crear todas las tablas (clientes, pedidos, abonos, admins)
+- [ ] Crear índices para optimización de consultas
+- [ ] Configurar triggers para actualización automática de saldo pendiente
+- [ ] **TEST:** Probar conexión a la base de datos
+- [ ] **TEST:** Verificar que las tablas se crearon correctamente
+- [ ] **TEST:** Probar que el trigger de saldo pendiente funciona insertando un abono de prueba
+
+### 1.3 Configuración del Backend (NestJS)
+- [ ] Crear proyecto NestJS
+- [ ] Instalar dependencias necesarias (TypeORM, Passport, JWT, bcrypt, class-validator)
+- [ ] Configurar archivo de variables de entorno (.env)
+- [ ] Configurar conexión a base de datos con TypeORM
+- [ ] Configurar CORS para permitir peticiones del frontend
+- [ ] **TEST:** Ejecutar proyecto y verificar que inicia sin errores
+- [ ] **TEST:** Verificar conexión exitosa a la base de datos
+
+### 1.4 Configuración del Frontend (Angular)
+- [ ] Crear proyecto Angular con routing y SCSS
+- [ ] Configurar estructura de carpetas (core, shared, features)
+- [ ] Configurar archivo de ambientes (environment.ts)
+- [ ] Configurar proxy para desarrollo local
+- [ ] **TEST:** Ejecutar proyecto y verificar que carga en el navegador
+
+---
+
+## Fase 2: Desarrollo del Backend - Core Funcional
+
+### 2.1 Implementación de Autenticación
+- [ ] Crear módulo de autenticación (auth)
+- [ ] Crear entidad Admin con TypeORM
+- [ ] Implementar hash de contraseñas con bcrypt
+- [ ] Implementar estrategia JWT
+- [ ] Crear guards de autenticación
+- [ ] Crear decoradores personalizados (@Public)
+- [ ] Crear endpoints de login y validación de token
+- [ ] **TEST:** Probar registro de admin en base de datos
+- [ ] **TEST:** Verificar que la contraseña se guarde hasheada
+- [ ] **TEST:** Probar login con credenciales correctas
+- [ ] **TEST:** Probar login con credenciales incorrectas
+- [ ] **TEST:** Verificar que se genera el token JWT correctamente
+- [ ] **TEST:** Probar acceso a ruta protegida con token válido
+- [ ] **TEST:** Probar acceso a ruta protegida sin token (debe denegar)
+- [ ] **TEST:** Probar acceso a ruta pública sin token (debe permitir)
+
+### 2.2 Implementación del Módulo de Clientes
+- [ ] Crear módulo, controlador y servicio de clientes
+- [ ] Crear entidad Cliente con TypeORM
+- [ ] Crear DTOs para validación (crear y actualizar cliente)
+- [ ] Implementar CRUD completo de clientes
+- [ ] Implementar búsqueda de clientes por documento
+- [ ] Implementar validaciones de datos únicos
+- [ ] **TEST:** Crear un cliente y verificar que se guarda en BD
+- [ ] **TEST:** Probar que no se puede crear cliente con documento duplicado
+- [ ] **TEST:** Obtener listado de todos los clientes
+- [ ] **TEST:** Buscar cliente por ID
+- [ ] **TEST:** Buscar cliente por documento
+- [ ] **TEST:** Actualizar datos de un cliente
+- [ ] **TEST:** Eliminar un cliente
+- [ ] **TEST:** Verificar validaciones de campos requeridos
+
+### 2.3 Implementación del Módulo de Pedidos
+- [ ] Crear módulo, controlador y servicio de pedidos
+- [ ] Crear entidad Pedido con TypeORM
+- [ ] Crear DTOs para validación (crear y actualizar pedido)
+- [ ] Implementar generación automática de código único
+- [ ] Implementar CRUD completo de pedidos
+- [ ] Implementar cambio de estados del pedido
+- [ ] Implementar consulta pública por código único (sin autenticación)
+- [ ] Implementar filtros por estado y cliente
+- [ ] **TEST:** Crear un pedido y verificar que se guarda en BD
+- [ ] **TEST:** Verificar que el código único se genera automáticamente
+- [ ] **TEST:** Verificar que el código único es realmente único
+- [ ] **TEST:** Verificar que el saldo pendiente inicial es igual al precio total
+- [ ] **TEST:** Obtener listado de todos los pedidos
+- [ ] **TEST:** Buscar pedido por ID
+- [ ] **TEST:** Buscar pedido por código único (ruta pública, sin auth)
+- [ ] **TEST:** Actualizar datos de un pedido
+- [ ] **TEST:** Cambiar estado de un pedido
+- [ ] **TEST:** Filtrar pedidos por estado
+- [ ] **TEST:** Filtrar pedidos por cliente
+- [ ] **TEST:** Eliminar un pedido
+- [ ] **TEST:** Verificar que al eliminar cliente se eliminan sus pedidos (CASCADE)
+
+### 2.4 Implementación del Módulo de Abonos
+- [ ] Crear módulo, controlador y servicio de abonos
+- [ ] Crear entidad Abono con TypeORM
+- [ ] Crear DTOs para validación (crear abono)
+- [ ] Implementar creación de abonos
+- [ ] Implementar cálculo automático de saldo pendiente
+- [ ] Implementar listado de abonos por pedido
+- [ ] Implementar eliminación de abonos (con recálculo de saldo)
+- [ ] **TEST:** Crear un abono y verificar que se guarda en BD
+- [ ] **TEST:** Verificar que el saldo pendiente se actualiza automáticamente al crear abono
+- [ ] **TEST:** Crear múltiples abonos y verificar cálculo correcto del saldo
+- [ ] **TEST:** Crear abono que cubra el total y verificar que saldo quede en 0
+- [ ] **TEST:** Obtener listado de abonos de un pedido específico
+- [ ] **TEST:** Eliminar un abono y verificar que el saldo se recalcula
+- [ ] **TEST:** Verificar que al eliminar pedido se eliminan sus abonos (CASCADE)
+- [ ] **TEST:** Probar que no se puede crear abono para pedido inexistente
+
+### 2.5 Implementación de Endpoints Adicionales
+- [ ] Crear endpoint para estadísticas del dashboard (pedidos activos, ingresos, etc.)
+- [ ] Crear endpoint para obtener resumen de pedidos listos
+- [ ] Crear endpoint para búsqueda avanzada de pedidos
+- [ ] Implementar paginación en listados
+- [ ] **TEST:** Probar endpoint de estadísticas con datos reales
+- [ ] **TEST:** Verificar cálculo correcto de ingresos del mes
+- [ ] **TEST:** Verificar conteo correcto de pedidos por estado
+- [ ] **TEST:** Probar paginación con diferentes tamaños de página
+- [ ] **TEST:** Probar búsqueda avanzada con múltiples filtros
+
+### 2.6 Implementación de Seguridad y Validaciones
+- [ ] Configurar pipes de validación global
+- [ ] Implementar interceptor de errores
+- [ ] Implementar sanitización de datos
+- [ ] Configurar rate limiting básico
+- [ ] Implementar logging de acciones críticas
+- [ ] **TEST:** Enviar datos inválidos y verificar que se rechacen
+- [ ] **TEST:** Verificar que errores se manejen correctamente
+- [ ] **TEST:** Probar límite de peticiones (rate limiting)
+
+---
+
+## Fase 3: Desarrollo del Frontend - Funcionalidad Core
+
+### 3.1 Implementación de Servicios Core
+- [ ] Crear servicio de autenticación (manejo de tokens, login, logout)
+- [ ] Crear servicio de clientes (CRUD)
+- [ ] Crear servicio de pedidos (CRUD, consultas)
+- [ ] Crear servicio de abonos (CRUD)
+- [ ] Crear interceptor HTTP para agregar token JWT automáticamente
+- [ ] Crear interceptor para manejo de errores HTTP
+- [ ] Crear modelos TypeScript para todas las entidades
+- [ ] **TEST:** Probar que el token se guarda correctamente en localStorage
+- [ ] **TEST:** Probar que el interceptor agrega el token a las peticiones
+- [ ] **TEST:** Probar que el servicio de auth detecta si hay sesión activa
+- [ ] **TEST:** Verificar que logout limpia el token correctamente
+
+### 3.2 Implementación de Guards y Utilidades
+- [ ] Crear AuthGuard para proteger rutas administrativas
+- [ ] Crear guard para redirección si ya está autenticado
+- [ ] Crear pipes y validadores personalizados
+- [ ] Crear utilidades para formateo de fechas y montos
+- [ ] **TEST:** Probar que AuthGuard bloquea acceso sin autenticación
+- [ ] **TEST:** Probar que AuthGuard permite acceso con token válido
+- [ ] **TEST:** Verificar redirección a login cuando no hay token
+
+### 3.3 Desarrollo de la Sección Pública (Consulta de Pedidos)
+- [ ] Crear componente de consulta inicial (formulario de búsqueda)
+- [ ] Implementar búsqueda por código único o documento
+- [ ] Crear componente de detalle de pedido
+- [ ] Mostrar información del cliente
+- [ ] Mostrar detalles del pedido (descripción, precio, estado)
+- [ ] Mostrar listado de abonos realizados
+- [ ] Mostrar saldo pendiente
+- [ ] Implementar diseño responsive para móviles
+- [ ] **TEST:** Buscar pedido con código válido y verificar que se muestra
+- [ ] **TEST:** Buscar pedido con código inválido y verificar mensaje de error
+- [ ] **TEST:** Verificar que el cálculo de saldo pendiente se muestra correctamente
+- [ ] **TEST:** Verificar visualización correcta en móvil (Chrome DevTools)
+
+### 3.4 Desarrollo de la Sección de Autenticación
+- [ ] Crear componente de login
+- [ ] Implementar formulario de inicio de sesión
+- [ ] Implementar validaciones en formulario
+- [ ] Implementar manejo de errores de autenticación
+- [ ] Implementar redirección automática tras login exitoso
+- [ ] **TEST:** Probar login con credenciales correctas
+- [ ] **TEST:** Probar login con credenciales incorrectas
+- [ ] **TEST:** Verificar validaciones de campos vacíos
+- [ ] **TEST:** Verificar redirección al dashboard tras login exitoso
+
+### 3.5 Desarrollo del Panel Administrativo - Dashboard
+- [ ] Crear estructura del layout administrativo (sidebar, header)
+- [ ] Crear componente de dashboard
+- [ ] Mostrar tarjetas con estadísticas principales
+- [ ] Implementar contador de pedidos por estado
+- [ ] Implementar cálculo de ingresos del mes
+- [ ] Mostrar gráficos básicos de métricas
+- [ ] **TEST:** Verificar que las estadísticas se cargan correctamente
+- [ ] **TEST:** Verificar cálculos de totales con datos de prueba
+- [ ] **TEST:** Probar que el dashboard es responsive
+
+### 3.6 Desarrollo del Panel Administrativo - Gestión de Clientes
+- [ ] Crear componente de listado de clientes
+- [ ] Implementar tabla con todos los clientes
+- [ ] Crear componente de formulario para crear cliente
+- [ ] Crear componente de formulario para editar cliente
+- [ ] Implementar búsqueda y filtrado de clientes
+- [ ] Implementar paginación
+- [ ] Implementar modales de confirmación para eliminar
+- [ ] **TEST:** Crear un cliente y verificar que aparece en la lista
+- [ ] **TEST:** Editar un cliente y verificar que se actualiza
+- [ ] **TEST:** Eliminar un cliente y verificar que desaparece
+- [ ] **TEST:** Probar búsqueda de clientes por nombre/documento
+- [ ] **TEST:** Verificar validaciones de formulario (campos requeridos)
+- [ ] **TEST:** Probar que no permite duplicar documentos
+
+### 3.7 Desarrollo del Panel Administrativo - Gestión de Pedidos
+- [ ] Crear componente de listado de pedidos
+- [ ] Implementar tabla con todos los pedidos
+- [ ] Implementar filtros por estado, cliente y fechas
+- [ ] Crear componente de formulario para crear pedido
+- [ ] Implementar selección de cliente existente o crear nuevo
+- [ ] Crear componente de formulario para editar pedido
+- [ ] Implementar cambio rápido de estados
+- [ ] Crear componente para ver detalle completo del pedido
+- [ ] Mostrar timeline de cambios de estado
+- [ ] Mostrar historial de abonos
+- [ ] **TEST:** Crear un pedido y verificar que aparece en la lista
+- [ ] **TEST:** Verificar que el código único se genera y muestra
+- [ ] **TEST:** Editar un pedido y verificar que se actualiza
+- [ ] **TEST:** Cambiar estado de un pedido y verificar cambio visual
+- [ ] **TEST:** Eliminar un pedido y verificar que desaparece
+- [ ] **TEST:** Probar filtros por estado (ver solo pendientes, listos, etc.)
+- [ ] **TEST:** Probar filtro por cliente
+- [ ] **TEST:** Verificar que saldo pendiente se muestra correctamente
+
+### 3.8 Desarrollo del Panel Administrativo - Gestión de Abonos
+- [ ] Crear componente para registrar nuevo abono
+- [ ] Implementar formulario con validación de monto
+- [ ] Implementar selección de método de pago
+- [ ] Mostrar saldo actualizado en tiempo real
+- [ ] Implementar confirmación de registro de abono
+- [ ] Crear vista de historial de abonos por pedido
+- [ ] **TEST:** Registrar un abono y verificar que aparece en la lista
+- [ ] **TEST:** Verificar que el saldo del pedido se actualiza automáticamente
+- [ ] **TEST:** Registrar múltiples abonos y verificar cálculo correcto
+- [ ] **TEST:** Intentar registrar abono mayor al saldo y verificar validación
+- [ ] **TEST:** Eliminar un abono y verificar que el saldo se recalcula
+
+### 3.9 Implementación de Componentes Compartidos
+- [ ] Crear componente de botón reutilizable
+- [ ] Crear componente de tabla reutilizable
+- [ ] Crear componente de formulario base
+- [ ] Crear componente de modal reutilizable
+- [ ] Crear componente de loader/spinner
+- [ ] Crear componente de alerta/notificación
+- [ ] Crear componente de confirmación
+- [ ] **TEST:** Verificar que los componentes compartidos se renderizan correctamente
+- [ ] **TEST:** Probar interacciones con modales (abrir, cerrar, confirmar)
+
+---
+
+## Fase 4: Funcionalidades PWA y Optimización
+
+### 4.1 Configuración PWA
+- [ ] Agregar soporte PWA al proyecto Angular
+- [ ] Configurar manifest.json con información de la app
+- [ ] Configurar iconos para diferentes tamaños de pantalla
+- [ ] Configurar service worker para caché de assets
+- [ ] Configurar estrategias de caché para API
+- [ ] **TEST:** Verificar que manifest.json es válido (usar Lighthouse)
+- [ ] **TEST:** Probar instalación de la PWA en dispositivo móvil Android
+- [ ] **TEST:** Probar instalación de la PWA en dispositivo iOS
+- [ ] **TEST:** Verificar que los iconos se muestran correctamente al instalar
+
+### 4.2 Funcionalidades Offline
+- [ ] Implementar caché de datos críticos
+- [ ] Implementar fallback para cuando no hay conexión
+- [ ] Mostrar indicador de estado de conexión
+- [ ] Implementar sincronización cuando se recupere la conexión
+- [ ] **TEST:** Desconectar internet y verificar que la app muestra datos cacheados
+- [ ] **TEST:** Verificar indicador de "sin conexión"
+- [ ] **TEST:** Reconectar y verificar sincronización de datos
+
+### 4.3 Optimización del Rendimiento
+- [ ] Implementar lazy loading de módulos
+- [ ] Optimizar imágenes y assets
+- [ ] Implementar virtual scroll en listados largos
+- [ ] Minimizar y comprimir archivos CSS/JS
+- [ ] Implementar preload de rutas críticas
+- [ ] **TEST:** Medir tiempo de carga inicial (debe ser < 3 segundos)
+- [ ] **TEST:** Verificar lazy loading con Chrome DevTools (Network tab)
+- [ ] **TEST:** Ejecutar Lighthouse y verificar score > 90 en Performance
+
+---
+
+## Fase 5: Testing y Validación
+
+### 5.1 Testing Backend
+- [ ] Escribir pruebas unitarias de servicios críticos
+- [ ] Escribir pruebas de integración de endpoints principales
+- [ ] Probar autenticación y autorización
+- [ ] Probar cálculo de saldos y triggers de base de datos
+- [ ] Realizar pruebas de carga básicas
+- [ ] **TEST:** Ejecutar suite completa de tests y verificar que todos pasen
+- [ ] **TEST:** Verificar cobertura de código > 70%
+
+### 5.2 Testing Frontend
+- [ ] Escribir pruebas unitarias de servicios críticos
+- [ ] Escribir pruebas de componentes principales
+- [ ] Probar guards y interceptores
+- [ ] Probar formularios y validaciones
+- [ ] Realizar pruebas de usabilidad
+- [ ] **TEST:** Ejecutar suite completa de tests y verificar que todos pasen
+- [ ] **TEST:** Verificar cobertura de código > 60%
+
+### 5.3 Validación Manual
+- [ ] Probar flujo completo de creación de pedido
+- [ ] Probar flujo de registro de abonos
+- [ ] Probar consulta pública de pedidos
+- [ ] Probar cambios de estado
+- [ ] Validar cálculos de saldos
+- [ ] Probar en diferentes dispositivos y navegadores
+- [ ] Validar responsive design en móviles y tablets
+- [ ] **TEST:** Crear pedido desde cero con cliente nuevo
+- [ ] **TEST:** Registrar 3 abonos y verificar que el saldo final es correcto
+- [ ] **TEST:** Buscar pedido desde dispositivo móvil sin autenticación
+- [ ] **TEST:** Probar en Chrome, Firefox, Safari y Edge
+- [ ] **TEST:** Probar en móvil Android
+- [ ] **TEST:** Probar en móvil iOS
+
+---
+
+## Fase 6: Deployment y Configuración de Producción
+
+### 6.1 Preparación del Backend para Producción
+- [ ] Configurar variables de entorno para producción
+- [ ] Generar build de producción optimizado
+- [ ] Configurar logging apropiado
+- [ ] Configurar seguridad HTTPS
+- [ ] Preparar scripts de inicio
+- [ ] **TEST:** Ejecutar build de producción localmente y verificar que funciona
+- [ ] **TEST:** Verificar que todas las variables de entorno están configuradas
+
+### 6.2 Deployment del Backend
+- [ ] Crear cuenta en Railway/Render
+- [ ] Configurar proyecto en plataforma de hosting
+- [ ] Subir código del backend
+- [ ] Configurar variables de entorno en el hosting
+- [ ] Configurar dominio personalizado (opcional)
+- [ ] Verificar conexión a base de datos de Supabase
+- [ ] **TEST:** Verificar que el backend inicia correctamente en producción
+- [ ] **TEST:** Probar endpoint de health check
+- [ ] **TEST:** Probar conexión a base de datos desde producción
+- [ ] **TEST:** Hacer login desde Postman/Insomnia usando URL de producción
+
+### 6.3 Preparación del Frontend para Producción
+- [ ] Actualizar variables de entorno con URL de API en producción
+- [ ] Generar build de producción optimizado
+- [ ] Verificar que PWA esté correctamente configurada
+- [ ] Validar que todos los assets estén incluidos
+- [ ] **TEST:** Ejecutar build de producción localmente
+- [ ] **TEST:** Servir build localmente y verificar funcionamiento
+
+### 6.4 Deployment del Frontend
+- [ ] Crear cuenta en Vercel/Netlify
+- [ ] Conectar repositorio de Git
+- [ ] Configurar build settings
+- [ ] Configurar variables de entorno
+- [ ] Configurar dominio personalizado (opcional)
+- [ ] Configurar redirecciones y reglas de ruteo
+- [ ] **TEST:** Verificar que el frontend carga correctamente en producción
+- [ ] **TEST:** Probar que se comunica correctamente con el backend
+- [ ] **TEST:** Verificar que las rutas funcionan correctamente
+
+### 6.5 Configuración Final
+- [ ] Verificar comunicación entre frontend y backend
+- [ ] Configurar CORS en backend con dominio de producción
+- [ ] Configurar SSL/HTTPS en ambos servicios
+- [ ] Configurar backups automáticos de base de datos en Supabase
+- [ ] **TEST:** Hacer una petición completa desde el frontend en producción
+- [ ] **TEST:** Verificar que SSL está activo (candado verde en navegador)
+- [ ] **TEST:** Verificar que backups están configurados en Supabase
+
+---
+
+## Fase 7: Post-Deployment y Verificación
+
+### 7.1 Verificación de Funcionalidad
+- [ ] Probar login en producción
+- [ ] Crear cliente de prueba en producción
+- [ ] Crear pedido de prueba en producción
+- [ ] Registrar abono de prueba en producción
+- [ ] Verificar consulta pública desde dispositivo móvil
+- [ ] Probar instalación de PWA en dispositivo móvil
+- [ ] Verificar que notificaciones funcionen correctamente
+- [ ] **TEST:** Completar flujo completo desde cero en producción
+- [ ] **TEST:** Verificar que todos los cálculos son correctos
+- [ ] **TEST:** Instalar PWA en móvil y verificar que funciona offline
+- [ ] **TEST:** Verificar que la app se ve bien en diferentes tamaños de pantalla
+
+### 7.2 Configuración de Monitoreo
+- [ ] Configurar logging de errores
+- [ ] Configurar alertas de downtime
+- [ ] Configurar analytics básico
+- [ ] Configurar monitoreo de rendimiento
+- [ ] **TEST:** Generar un error intencional y verificar que se registra
+- [ ] **TEST:** Verificar que las alertas funcionan
+
+### 7.3 Documentación de Usuario
+- [ ] Crear manual de usuario para la modista
+- [ ] Documentar flujo de creación de pedidos
+- [ ] Documentar flujo de registro de abonos
+- [ ] Crear guía de consulta para clientes
+- [ ] Crear FAQs
+- [ ] **TEST:** Pedir a alguien sin conocimiento técnico que lea el manual y pruebe la app
+
+### 7.4 Capacitación
+- [ ] Realizar sesión de capacitación con la modista
+- [ ] Demostrar creación de clientes
+- [ ] Demostrar gestión de pedidos
+- [ ] Demostrar registro de abonos
+- [ ] Explicar consulta pública para compartir con clientes
+- [ ] **TEST:** Que la modista realice todas las operaciones de forma autónoma
+- [ ] **TEST:** Resolver dudas y documentar preguntas frecuentes
+
+---
+
+## Fase 8: Mejoras Visuales y Experiencia de Usuario (UI/UX)
+
+### 8.1 Refinamiento del Diseño Visual
+- [ ] Definir y aplicar paleta de colores corporativa
+- [ ] Elegir y aplicar tipografías consistentes
+- [ ] Crear sistema de espaciado consistente
+- [ ] Implementar animaciones y transiciones suaves
+- [ ] Agregar micro-interacciones en botones y elementos
+- [ ] **TEST:** Verificar que los colores tienen buen contraste (herramientas de accesibilidad)
+- [ ] **TEST:** Verificar que las animaciones no son muy lentas ni muy rápidas
+
+### 8.2 Mejoras en la Interfaz Pública
+- [ ] Diseñar pantalla de bienvenida atractiva
+- [ ] Mejorar diseño del formulario de consulta
+- [ ] Diseñar card de detalle de pedido más visual
+- [ ] Agregar indicadores visuales de progreso de pedido
+- [ ] Implementar badges de estado con colores distintivos
+- [ ] **TEST:** Pedir feedback a usuarios sobre el diseño
+- [ ] **TEST:** Verificar que es fácil de usar en móvil
+
+### 8.3 Mejoras en el Panel Administrativo
+- [ ] Diseñar sidebar con iconografía clara
+- [ ] Mejorar diseño de tarjetas del dashboard
+- [ ] Implementar gráficos visuales atractivos
+- [ ] Mejorar diseño de tablas (striped, hover effects)
+- [ ] Diseñar modales más atractivos y claros
+- [ ] Agregar iconos a botones de acción
+- [ ] **TEST:** Probar usabilidad con la modista
+- [ ] **TEST:** Verificar que todo es intuitivo
+
+### 8.4 Mejoras Responsive
+- [ ] Optimizar layout para tablets
+- [ ] Mejorar menú de navegación móvil
+- [ ] Ajustar tamaños de fuente para diferentes pantallas
+- [ ] Mejorar usabilidad de formularios en móviles
+- [ ] Optimizar tablas para pantallas pequeñas
+- [ ] **TEST:** Probar en tablet (iPad o similar)
+- [ ] **TEST:** Probar en móvil pequeño (iPhone SE o similar)
+- [ ] **TEST:** Probar en móvil grande (iPhone Pro Max o similar)
+- [ ] **TEST:** Probar en desktop con diferentes resoluciones
+
+### 8.5 Pulimiento Final
+- [ ] Agregar loading states con skeletons
+- [ ] Implementar toasts/notificaciones elegantes
+- [ ] Agregar empty states con ilustraciones
+- [ ] Implementar tooltips explicativos
+- [ ] Agregar favicon y splash screens
+- [ ] Verificar accesibilidad básica (contraste, tamaños)
+- [ ] Realizar ajustes finales de estilo según feedback
+- [ ] **TEST:** Ejecutar Lighthouse y verificar scores altos en todas las categorías
+- [ ] **TEST:** Probar con lector de pantalla básico
+- [ ] **TEST:** Verificar que todos los loading states funcionan
+- [ ] **TEST:** Hacer recorrido completo y verificar que todo se ve profesional
+
+---
+
+## 🎯 Notas Importantes
+
+- **MARCA CADA TAREA** cuando la completes usando `[x]` en lugar de `[ ]`
+- Las fases 1-3 son **CRÍTICAS** y deben completarse antes de avanzar
+- La fase 4 es importante para la experiencia móvil
+- La fase 5 asegura la calidad del producto
+- Las fases 6-7 llevan el producto a los usuarios
+- La fase 8 es la última, enfocada en que todo se vea profesional y pulido
+- **No omitas los TESTS** - son fundamentales para asegurar que todo funcione correctamente
+- Los tests marcados con **TEST:** son verificaciones prácticas que debes realizar
+- Si un test falla, regresa y corrige antes de continuar
+
+## ⏱️ Estimación de Tiempos
+
+- Fase 1: 3-5 días
+- Fase 2: 7-10 días
+- Fase 3: 10-14 días
+- Fase 4: 3-5 días
+- Fase 5: 5-7 días
+- Fase 6: 3-5 días
+- Fase 7: 2-3 días
+- Fase 8: 5-7 días
+
+**Total estimado: 6-8 semanas**
