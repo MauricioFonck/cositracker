@@ -39,21 +39,21 @@
 ## Fase 2: Desarrollo del Backend - Core Funcional
 
 ### 2.1 Implementación de Autenticación
-- [ ] Crear módulo de autenticación (auth)
-- [ ] Crear entidad Admin con TypeORM
-- [ ] Implementar hash de contraseñas con bcrypt
-- [ ] Implementar estrategia JWT
-- [ ] Crear guards de autenticación
-- [ ] Crear decoradores personalizados (@Public)
-- [ ] Crear endpoints de login y validación de token
-- [ ] **TEST:** Probar registro de admin en base de datos
-- [ ] **TEST:** Verificar que la contraseña se guarde hasheada
-- [ ] **TEST:** Probar login con credenciales correctas
-- [ ] **TEST:** Probar login con credenciales incorrectas
-- [ ] **TEST:** Verificar que se genera el token JWT correctamente
-- [ ] **TEST:** Probar acceso a ruta protegida con token válido
-- [ ] **TEST:** Probar acceso a ruta protegida sin token (debe denegar)
-- [ ] **TEST:** Probar acceso a ruta pública sin token (debe permitir)
+- [x] Crear módulo de autenticación (auth)
+- [x] Crear entidad Admin con TypeORM
+- [x] Implementar hash de contraseñas con bcrypt
+- [x] Implementar estrategia JWT
+- [x] Crear guards de autenticación
+- [x] Crear decoradores personalizados (@Public)
+- [x] Crear endpoints de login y validación de token
+- [x] **TEST:** Probar registro de admin en base de datos
+- [x] **TEST:** Verificar que la contraseña se guarde hasheada
+- [x] **TEST:** Probar login con credenciales correctas
+- [x] **TEST:** Probar login con credenciales incorrectas
+- [x] **TEST:** Verificar que se genera el token JWT correctamente
+- [x] **TEST:** Probar acceso a ruta protegida con token válido
+- [x] **TEST:** Probar acceso a ruta protegida sin token (debe denegar)
+- [x] **TEST:** Probar acceso a ruta pública sin token (debe permitir)
 
 ### 2.2 Implementación del Módulo de Clientes
 - [ ] Crear módulo, controlador y servicio de clientes
@@ -480,6 +480,7 @@
 ## 🎯 Notas Importantes
 
 - **MARCA CADA TAREA** cuando la completes usando `[x]` en lugar de `[ ]`
+- **IDIOMA OBLIGATORIO**: Todo el código (variables, métodos, comentarios) debe estar en **ESPAÑOL**.
 - Las fases 1-3 son **CRÍTICAS** y deben completarse antes de avanzar
 - La fase 4 es importante para la experiencia móvil
 - La fase 5 asegura la calidad del producto

@@ -31,6 +31,10 @@ Sistema web progresivo (PWA) para gestión de pedidos de modistería que permite
 - **Administrador (Modista)**: Gestión completa del sistema
 - **Clientes**: Consulta de pedidos (sin autenticación)
 
+### 1.4 Estándares de Código e Idioma
+- **Idioma Obligatorio**: Todo el código, incluyendo nombres de variables, métodos, clases, comentarios, documentación y mensajes de commit debe estar estrictamente en **ESPAÑOL**.
+- **Excepción**: Palabras reservadas del lenguaje (ej. `if`, `else`, `return`) o librerías externas que requieran configuración en inglés.
+
 ---
 
 ## 2. Arquitectura del Sistema

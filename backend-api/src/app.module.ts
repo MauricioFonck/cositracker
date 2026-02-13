@@ -11,6 +11,7 @@ import { Admin } from './admins/entities/admin.entity';
 import { Cliente } from './clientes/entities/cliente.entity';
 import { Pedido } from './pedidos/entities/pedido.entity';
 import { Abono } from './abonos/entities/abono.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -42,8 +43,13 @@ import { Abono } from './abonos/entities/abono.entity';
     ClientesModule,
     PedidosModule,
     AbonosModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    console.log('AppModule initialized');
+  }
+}
