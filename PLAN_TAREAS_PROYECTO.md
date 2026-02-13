@@ -14,9 +14,9 @@
 - [X] Ejecutar script SQL para crear todas las tablas (clientes, pedidos, abonos, admins) - *Realizado vía TypeORM Code-First*
 - [X] Crear índices para optimización de consultas - *Definidos en Entidades*
 - [X] Configurar triggers para actualización automática de saldo pendiente - *Script SQL generado en db/init_triggers.sql*
-- [ ] **TEST:** Probar conexión a la base de datos
-- [ ] **TEST:** Verificar que las tablas se crearon correctamente
-- [ ] **TEST:** Probar que el trigger de saldo pendiente funciona insertando un abono de prueba
+- [X] **TEST:** Probar conexión a la base de datos
+- [X] **TEST:** Verificar que las tablas se crearon correctamente
+- [X] **TEST:** Probar que el trigger de saldo pendiente funciona insertando un abono de prueba
 
 ### 1.3 Configuración del Backend (NestJS)
 - [X] Crear proyecto NestJS
@@ -24,15 +24,15 @@
 - [X] Configurar archivo de variables de entorno (.env)
 - [X] Configurar conexión a base de datos con TypeORM
 - [X] Configurar CORS para permitir peticiones del frontend
-- [ ] **TEST:** Ejecutar proyecto y verificar que inicia sin errores
-- [ ] **TEST:** Verificar conexión exitosa a la base de datos
+- [X] **TEST:** Ejecutar proyecto y verificar que inicia sin errores
+- [X] **TEST:** Verificar conexión exitosa a la base de datos
 
 ### 1.4 Configuración del Frontend (Angular)
-- [ ] Crear proyecto Angular con routing y SCSS
-- [ ] Configurar estructura de carpetas (core, shared, features)
-- [ ] Configurar archivo de ambientes (environment.ts)
-- [ ] Configurar proxy para desarrollo local
-- [ ] **TEST:** Ejecutar proyecto y verificar que carga en el navegador
+- [X] Crear proyecto Angular con routing y SCSS
+- [X] Configurar estructura de carpetas (core, shared, features)
+- [X] Configurar archivo de ambientes (environment.ts)
+- [X] Configurar proxy para desarrollo local
+- [X] **TEST:** Ejecutar proyecto y verificar que carga en el navegador
 
 ---
 

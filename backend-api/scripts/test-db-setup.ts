@@ -70,8 +70,8 @@ async function runTests() {
 
         // Limpiar datos de prueba anteriores
         // Orden inverso para respetar FKs
-        await abonoRepo.delete({});
-        await pedidoRepo.delete({});
+        await abonoRepo.createQueryBuilder().delete().execute();
+        await pedidoRepo.createQueryBuilder().delete().execute();
         await clientRepo.delete({ documento: 'TEST-DOC-123' });
 
         // Crear Cliente
