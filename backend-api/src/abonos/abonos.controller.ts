@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { AbonosService } from './abonos.service';
 import { CreateAbonoDto } from './dto/create-abono.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -9,17 +9,17 @@ export class AbonosController {
     constructor(private readonly abonosService: AbonosService) { }
 
     @Post()
-    crear(@Body() createAbonoDto: CreateAbonoDto) {
-        return this.abonosService.crear(createAbonoDto);
+    crear(@Body() createAbonoDto: CreateAbonoDto, @Request() req) {
+        return this.abonosService.crear(createAbonoDto, req.user.userId);
     }
 
     @Get('pedido/:pedidoId')
-    encontrarPorPedido(@Param('pedidoId') pedidoId: string) {
-        return this.abonosService.encontrarPorPedido(pedidoId);
+    encontrarPorPedido(@Param('pedidoId') pedidoId: string, @Request() req) {
+        return this.abonosService.encontrarPorPedido(pedidoId, req.user.userId);
     }
 
     @Delete(':id')
-    eliminar(@Param('id') id: string) {
-        return this.abonosService.eliminar(id);
+    eliminar(@Param('id') id: string, @Request() req) {
+        return this.abonosService.eliminar(id, req.user.userId);
     }
 }

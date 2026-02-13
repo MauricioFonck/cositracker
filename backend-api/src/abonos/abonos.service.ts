@@ -14,51 +14,51 @@ export class AbonosService {
         private readonly pedidoRepository: Repository<Pedido>,
     ) { }
 
-    async crear(createAbonoDto: CreateAbonoDto): Promise<Abono> {
+    async crear(createAbonoDto: CreateAbonoDto, adminId: string): Promise<Abono> {
         const pedido = await this.pedidoRepository.findOne({
-            where: { id: createAbonoDto.pedidoId }
+            where: { id: createAbonoDto.pedidoId, adminId }
         });
 
         if (!pedido) {
-            throw new NotFoundException(`Pedido con ID ${createAbonoDto.pedidoId} no encontrado`);
+            throw new NotFoundException(`Pedido con ID ${createAbonoDto.pedidoId} no encontrado en tu cuenta`);
         }
 
         if (Number(createAbonoDto.monto) > Number(pedido.saldoPendiente)) {
             throw new BadRequestException(`El monto del abono (${createAbonoDto.monto}) no puede ser mayor al saldo pendiente (${pedido.saldoPendiente})`);
         }
 
-        const abono = this.abonoRepository.create(createAbonoDto);
+        const abono = this.abonoRepository.create({ ...createAbonoDto, adminId });
         const abonoGuardado = await this.abonoRepository.save(abono);
 
         // Actualizar saldo del pedido
-        await this.actualizarSaldoPedido(pedido.id);
+        await this.actualizarSaldoPedido(pedido.id, adminId);
 
         return abonoGuardado;
     }
 
-    async encontrarPorPedido(pedidoId: string): Promise<Abono[]> {
+    async encontrarPorPedido(pedidoId: string, adminId: string): Promise<Abono[]> {
         return await this.abonoRepository.find({
-            where: { pedidoId },
+            where: { pedidoId, adminId },
             order: { fecha: 'DESC', createdAt: 'DESC' }
         });
     }
 
-    async eliminar(id: string): Promise<void> {
-        const abono = await this.abonoRepository.findOne({ where: { id } });
+    async eliminar(id: string, adminId: string): Promise<void> {
+        const abono = await this.abonoRepository.findOne({ where: { id, adminId } });
         if (!abono) {
-            throw new NotFoundException(`Abono con ID ${id} no encontrado`);
+            throw new NotFoundException(`Abono con ID ${id} no encontrado en tu cuenta`);
         }
 
         const pedidoId = abono.pedidoId;
         await this.abonoRepository.remove(abono);
 
         // Recalcular saldo del pedido
-        await this.actualizarSaldoPedido(pedidoId);
+        await this.actualizarSaldoPedido(pedidoId, adminId);
     }
 
-    private async actualizarSaldoPedido(pedidoId: string): Promise<void> {
+    private async actualizarSaldoPedido(pedidoId: string, adminId: string): Promise<void> {
         const pedido = await this.pedidoRepository.findOne({
-            where: { id: pedidoId },
+            where: { id: pedidoId, adminId },
             relations: { abonos: true }
         });
 

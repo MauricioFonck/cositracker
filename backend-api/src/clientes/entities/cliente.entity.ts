@@ -1,10 +1,11 @@
-import { Entity, Column, OneToMany, Unique } from 'typeorm';
+import { Entity, Column, OneToMany, Unique, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { Pedido } from '../../pedidos/entities/pedido.entity';
+import { Admin } from '../../admins/entities/admin.entity';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @Entity('clientes')
-@Unique(['documento'])
+@Unique(['documento', 'adminId'])
 export class Cliente extends BaseEntity {
     @Column()
     @IsNotEmpty({ message: 'El nombre es obligatorio' })
@@ -28,4 +29,10 @@ export class Cliente extends BaseEntity {
 
     @OneToMany(() => Pedido, (pedido) => pedido.cliente)
     pedidos: Pedido[];
+
+    @ManyToOne(() => Admin, { onDelete: 'CASCADE' })
+    admin: Admin;
+
+    @Column({ nullable: true })
+    adminId: string;
 }

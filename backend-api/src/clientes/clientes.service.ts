@@ -12,24 +12,25 @@ export class ClientesService {
         private readonly clienteRepository: Repository<Cliente>,
     ) { }
 
-    async crear(createClienteDto: CreateClienteDto): Promise<Cliente> {
+    async crear(createClienteDto: CreateClienteDto, adminId: string): Promise<Cliente> {
         const { documento } = createClienteDto;
 
-        // Verificar si el cliente ya existe
-        const existe = await this.clienteRepository.findOne({ where: { documento } });
+        // Verificar si el cliente ya existe para este administrador
+        const existe = await this.clienteRepository.findOne({ where: { documento, adminId } });
         if (existe) {
-            throw new ConflictException(`El cliente con documento ${documento} ya existe`);
+            throw new ConflictException(`El cliente con documento ${documento} ya existe en tu cuenta`);
         }
 
         try {
-            const cliente = this.clienteRepository.create(createClienteDto);
+            const cliente = this.clienteRepository.create({ ...createClienteDto, adminId });
             return await this.clienteRepository.save(cliente);
         } catch (error) {
+            console.error(error);
             throw new InternalServerErrorException('Error al crear el cliente');
         }
     }
 
-    async encontrarTodos(filtros?: {
+    async encontrarTodos(adminId: string, filtros?: {
         termino?: string;
         page?: number;
         limit?: number;
@@ -39,6 +40,7 @@ export class ClientesService {
         const skip = (page - 1) * limit;
 
         const query = this.clienteRepository.createQueryBuilder('cliente')
+            .where('cliente.adminId = :adminId', { adminId })
             .orderBy('cliente.createdAt', 'DESC');
 
         if (filtros?.termino) {
@@ -55,30 +57,30 @@ export class ClientesService {
         return { data, total };
     }
 
-    async encontrarUno(id: string): Promise<Cliente> {
-        const cliente = await this.clienteRepository.findOne({ where: { id } });
+    async encontrarUno(id: string, adminId: string): Promise<Cliente> {
+        const cliente = await this.clienteRepository.findOne({ where: { id, adminId } });
         if (!cliente) {
-            throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
+            throw new NotFoundException(`Cliente con ID ${id} no encontrado en tu cuenta`);
         }
         return cliente;
     }
 
-    async encontrarPorDocumento(documento: string): Promise<Cliente> {
-        const cliente = await this.clienteRepository.findOne({ where: { documento } });
+    async encontrarPorDocumento(documento: string, adminId: string): Promise<Cliente> {
+        const cliente = await this.clienteRepository.findOne({ where: { documento, adminId } });
         if (!cliente) {
-            throw new NotFoundException(`Cliente con documento ${documento} no encontrado`);
+            throw new NotFoundException(`Cliente con documento ${documento} no encontrado en tu cuenta`);
         }
         return cliente;
     }
 
-    async actualizar(id: string, updateClienteDto: UpdateClienteDto): Promise<Cliente> {
-        const cliente = await this.encontrarUno(id);
+    async actualizar(id: string, updateClienteDto: UpdateClienteDto, adminId: string): Promise<Cliente> {
+        const cliente = await this.encontrarUno(id, adminId);
 
-        // Si se actualiza el documento, verificar que no exista ya
+        // Si se actualiza el documento, verificar que no exista ya para este administrador
         if (updateClienteDto.documento && updateClienteDto.documento !== cliente.documento) {
-            const existe = await this.clienteRepository.findOne({ where: { documento: updateClienteDto.documento } });
+            const existe = await this.clienteRepository.findOne({ where: { documento: updateClienteDto.documento, adminId } });
             if (existe) {
-                throw new ConflictException(`El documento ${updateClienteDto.documento} ya está registrado`);
+                throw new ConflictException(`El documento ${updateClienteDto.documento} ya está registrado en tu cuenta`);
             }
         }
 
@@ -90,10 +92,10 @@ export class ClientesService {
         }
     }
 
-    async eliminar(id: string): Promise<void> {
-        const result = await this.clienteRepository.delete(id);
+    async eliminar(id: string, adminId: string): Promise<void> {
+        const result = await this.clienteRepository.delete({ id, adminId });
         if (result.affected === 0) {
-            throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
+            throw new NotFoundException(`Cliente con ID ${id} no encontrado en tu cuenta`);
         }
     }
 }

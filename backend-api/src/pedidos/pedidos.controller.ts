@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Request } from '@nestjs/common';
 import { PedidosService } from './pedidos.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
@@ -12,19 +12,20 @@ export class PedidosController {
     constructor(private readonly pedidosService: PedidosService) { }
 
     @Post()
-    crear(@Body() createPedidoDto: CreatePedidoDto) {
-        return this.pedidosService.crear(createPedidoDto);
+    crear(@Body() createPedidoDto: CreatePedidoDto, @Request() req) {
+        return this.pedidosService.crear(createPedidoDto, req.user.userId);
     }
 
     @Get()
     encontrarTodos(
+        @Request() req,
         @Query('estado') estado?: EstadoPedido,
         @Query('clienteId') clienteId?: string,
         @Query('termino') termino?: string,
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
     ) {
-        return this.pedidosService.encontrarTodos({
+        return this.pedidosService.encontrarTodos(req.user.userId, {
             estado,
             clienteId,
             termino,
@@ -40,22 +41,22 @@ export class PedidosController {
     }
 
     @Get(':id')
-    encontrarUno(@Param('id') id: string) {
-        return this.pedidosService.encontrarUno(id);
+    encontrarUno(@Param('id') id: string, @Request() req) {
+        return this.pedidosService.encontrarUno(id, req.user.userId);
     }
 
     @Patch(':id')
-    actualizar(@Param('id') id: string, @Body() updatePedidoDto: UpdatePedidoDto) {
-        return this.pedidosService.actualizar(id, updatePedidoDto);
+    actualizar(@Param('id') id: string, @Body() updatePedidoDto: UpdatePedidoDto, @Request() req) {
+        return this.pedidosService.actualizar(id, updatePedidoDto, req.user.userId);
     }
 
     @Patch(':id/estado/:estado')
-    cambiarEstado(@Param('id') id: string, @Param('estado') estado: EstadoPedido) {
-        return this.pedidosService.cambiarEstado(id, estado);
+    cambiarEstado(@Param('id') id: string, @Param('estado') estado: EstadoPedido, @Request() req) {
+        return this.pedidosService.cambiarEstado(id, estado, req.user.userId);
     }
 
     @Delete(':id')
-    eliminar(@Param('id') id: string) {
-        return this.pedidosService.eliminar(id);
+    eliminar(@Param('id') id: string, @Request() req) {
+        return this.pedidosService.eliminar(id, req.user.userId);
     }
 }

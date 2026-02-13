@@ -2,6 +2,7 @@ import { Entity, Column, ManyToOne, OneToMany, BeforeInsert } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { Cliente } from '../../clientes/entities/cliente.entity';
 import { Abono } from '../../abonos/entities/abono.entity';
+import { Admin } from '../../admins/entities/admin.entity';
 import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export enum EstadoPedido {
@@ -58,6 +59,12 @@ export class Pedido extends BaseEntity {
 
     @OneToMany(() => Abono, (abono) => abono.pedido)
     abonos: Abono[];
+
+    @ManyToOne(() => Admin, { onDelete: 'CASCADE' })
+    admin: Admin;
+
+    @Column({ nullable: true })
+    adminId: string;
 
     @BeforeInsert()
     generarCodigo() {

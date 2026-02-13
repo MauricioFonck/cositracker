@@ -16,10 +16,11 @@ export class DashboardService {
         private clienteRepository: Repository<Cliente>,
     ) { }
 
-    async getStats() {
+    async getStats(adminId: string) {
         // Pedidos activos (PENDIENTE, EN_PROCESO, LISTO) - LISTO también se considera activo hasta que se ENTREGA
         const pedidosActivos = await this.pedidoRepository.count({
             where: {
+                adminId,
                 estado: In([EstadoPedido.PENDIENTE, EstadoPedido.EN_PROCESO, EstadoPedido.LISTO])
             }
         });
@@ -40,7 +41,8 @@ export class DashboardService {
 
         const { suma } = await this.abonoRepository.createQueryBuilder('abono')
             .select('SUM(abono.monto)', 'suma')
-            .where('abono.fecha >= :start', { start: firstDay })
+            .where('abono.adminId = :adminId', { adminId })
+            .andWhere('abono.fecha >= :start', { start: firstDay })
             .andWhere('abono.fecha <= :end', { end: lastDay })
             .getRawOne();
 
@@ -50,15 +52,17 @@ export class DashboardService {
         const pedidosPorEstado = await this.pedidoRepository.createQueryBuilder('pedido')
             .select('pedido.estado', 'estado')
             .addSelect('COUNT(pedido.id)', 'count')
+            .where('pedido.adminId = :adminId', { adminId })
             .groupBy('pedido.estado')
             .getRawMany();
 
         // Total clientes
-        const totalClientes = await this.clienteRepository.count();
+        const totalClientes = await this.clienteRepository.count({ where: { adminId } });
 
         // Total Saldo Pendiente (Dinero por cobrar)
         const { saldoTotal } = await this.pedidoRepository.createQueryBuilder('pedido')
             .select('SUM(pedido.saldoPendiente)', 'saldoTotal')
+            .where('pedido.adminId = :adminId', { adminId })
             .getRawOne();
 
         const dineroPorCobrar = saldoTotal ? Number(saldoTotal) : 0;

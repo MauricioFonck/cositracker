@@ -1,6 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { Pedido } from '../../pedidos/entities/pedido.entity';
+import { Admin } from '../../admins/entities/admin.entity';
 
 export enum MetodoPago {
     EFECTIVO = 'EFECTIVO',
@@ -32,4 +33,10 @@ export class Abono extends BaseEntity {
 
     @Column()
     pedidoId: string;
+
+    @ManyToOne(() => Admin, { onDelete: 'CASCADE' })
+    admin: Admin;
+
+    @Column({ nullable: true })
+    adminId: string;
 }

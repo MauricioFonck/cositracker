@@ -15,17 +15,20 @@ export class PedidosService {
         private readonly clienteRepository: Repository<Cliente>,
     ) { }
 
-    async crear(createPedidoDto: CreatePedidoDto): Promise<Pedido> {
-        // Verificar que el cliente existe
-        const cliente = await this.clienteRepository.findOne({ where: { id: createPedidoDto.clienteId } });
+    async crear(createPedidoDto: CreatePedidoDto, adminId: string): Promise<Pedido> {
+        // Verificar que el cliente existe y pertenece al mismo administrador
+        const cliente = await this.clienteRepository.findOne({
+            where: { id: createPedidoDto.clienteId, adminId }
+        });
         if (!cliente) {
-            throw new NotFoundException(`Cliente con ID ${createPedidoDto.clienteId} no encontrado`);
+            throw new NotFoundException(`Cliente con ID ${createPedidoDto.clienteId} no encontrado en tu cuenta`);
         }
 
         try {
             const pedido = this.pedidoRepository.create({
                 ...createPedidoDto,
-                cliente: cliente
+                cliente: cliente,
+                adminId: adminId
             });
             // La generación de código y saldo inicial se maneja con @BeforeInsert en la entidad
             return await this.pedidoRepository.save(pedido);
@@ -35,7 +38,7 @@ export class PedidosService {
         }
     }
 
-    async encontrarTodos(filtros?: {
+    async encontrarTodos(adminId: string, filtros?: {
         estado?: EstadoPedido;
         clienteId?: string;
         termino?: string;
@@ -48,6 +51,7 @@ export class PedidosService {
 
         const query = this.pedidoRepository.createQueryBuilder('pedido')
             .leftJoinAndSelect('pedido.cliente', 'cliente')
+            .where('pedido.adminId = :adminId', { adminId })
             .orderBy('pedido.createdAt', 'DESC');
 
         if (filtros?.estado) {
@@ -72,14 +76,14 @@ export class PedidosService {
         return { data, total };
     }
 
-    async encontrarUno(id: string): Promise<Pedido> {
+    async encontrarUno(id: string, adminId: string): Promise<Pedido> {
         const pedido = await this.pedidoRepository.findOne({
-            where: { id },
+            where: { id, adminId },
             relations: ['cliente', 'abonos']
         });
 
         if (!pedido) {
-            throw new NotFoundException(`Pedido con ID ${id} no encontrado`);
+            throw new NotFoundException(`Pedido con ID ${id} no encontrado en tu cuenta`);
         }
         return pedido;
     }
@@ -96,17 +100,12 @@ export class PedidosService {
         return pedido;
     }
 
-    async actualizar(id: string, updatePedidoDto: UpdatePedidoDto): Promise<Pedido> {
-        const pedido = await this.encontrarUno(id);
+    async actualizar(id: string, updatePedidoDto: UpdatePedidoDto, adminId: string): Promise<Pedido> {
+        const pedido = await this.encontrarUno(id, adminId);
 
         // Si se actualiza el precio total, actualizar el saldo
         if (updatePedidoDto.precioTotal !== undefined && updatePedidoDto.precioTotal !== pedido.precioTotal) {
-            // Calcular nuevo saldo: Nuevo Precio - Total Abonos (siempre asumiendo 0 abonos aqui si no se cargan, pero deberian venir en encontrarUno)
-            // Nota: Si 'abonos' no se carga por defecto en encontrarUno, debo asegurarme. Si esta en relation, TypeORM devuelve array vacio o undefined?
-            // En typeorm findOne con relation, trae array.
             const totalAbonado = pedido.abonos ? pedido.abonos.reduce((sum, abono) => sum + Number(abono.monto), 0) : 0;
-
-            // El nuevo saldo es el nuevo precio total menos lo que ya se abonó
             pedido.saldoPendiente = Number(updatePedidoDto.precioTotal) - totalAbonado;
         }
 
@@ -114,16 +113,16 @@ export class PedidosService {
         return await this.pedidoRepository.save(pedido);
     }
 
-    async cambiarEstado(id: string, estado: EstadoPedido): Promise<Pedido> {
-        const pedido = await this.encontrarUno(id);
+    async cambiarEstado(id: string, estado: EstadoPedido, adminId: string): Promise<Pedido> {
+        const pedido = await this.encontrarUno(id, adminId);
         pedido.estado = estado;
         return await this.pedidoRepository.save(pedido);
     }
 
-    async eliminar(id: string): Promise<void> {
-        const result = await this.pedidoRepository.delete(id);
+    async eliminar(id: string, adminId: string): Promise<void> {
+        const result = await this.pedidoRepository.delete({ id, adminId });
         if (result.affected === 0) {
-            throw new NotFoundException(`Pedido con ID ${id} no encontrado`);
+            throw new NotFoundException(`Pedido con ID ${id} no encontrado en tu cuenta`);
         }
     }
 }
