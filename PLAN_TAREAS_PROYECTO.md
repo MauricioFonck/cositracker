@@ -56,81 +56,81 @@
 - [x] **TEST:** Probar acceso a ruta pública sin token (debe permitir)
 
 ### 2.2 Implementación del Módulo de Clientes
-- [ ] Crear módulo, controlador y servicio de clientes
-- [ ] Crear entidad Cliente con TypeORM
-- [ ] Crear DTOs para validación (crear y actualizar cliente)
-- [ ] Implementar CRUD completo de clientes
-- [ ] Implementar búsqueda de clientes por documento
-- [ ] Implementar validaciones de datos únicos
-- [ ] **TEST:** Crear un cliente y verificar que se guarda en BD
-- [ ] **TEST:** Probar que no se puede crear cliente con documento duplicado
-- [ ] **TEST:** Obtener listado de todos los clientes
-- [ ] **TEST:** Buscar cliente por ID
-- [ ] **TEST:** Buscar cliente por documento
-- [ ] **TEST:** Actualizar datos de un cliente
-- [ ] **TEST:** Eliminar un cliente
-- [ ] **TEST:** Verificar validaciones de campos requeridos
+- [x] Crear módulo, controlador y servicio de clientes
+- [x] Crear entidad Cliente con TypeORM
+- [x] Crear DTOs para validación (crear y actualizar cliente)
+- [x] Implementar CRUD completo de clientes
+- [x] Implementar búsqueda de clientes por documento
+- [x] Implementar validaciones de datos únicos
+- [x] **TEST:** Crear un cliente y verificar que se guarda en BD
+- [x] **TEST:** Probar que no se puede crear cliente con documento duplicado
+- [x] **TEST:** Obtener listado de todos los clientes
+- [x] **TEST:** Buscar cliente por ID
+- [x] **TEST:** Buscar cliente por documento
+- [x] **TEST:** Actualizar datos de un cliente
+- [x] **TEST:** Eliminar un cliente
+- [x] **TEST:** Verificar validaciones de campos requeridos
 
 ### 2.3 Implementación del Módulo de Pedidos
-- [ ] Crear módulo, controlador y servicio de pedidos
-- [ ] Crear entidad Pedido con TypeORM
-- [ ] Crear DTOs para validación (crear y actualizar pedido)
-- [ ] Implementar generación automática de código único
-- [ ] Implementar CRUD completo de pedidos
-- [ ] Implementar cambio de estados del pedido
-- [ ] Implementar consulta pública por código único (sin autenticación)
-- [ ] Implementar filtros por estado y cliente
-- [ ] **TEST:** Crear un pedido y verificar que se guarda en BD
-- [ ] **TEST:** Verificar que el código único se genera automáticamente
-- [ ] **TEST:** Verificar que el código único es realmente único
-- [ ] **TEST:** Verificar que el saldo pendiente inicial es igual al precio total
-- [ ] **TEST:** Obtener listado de todos los pedidos
-- [ ] **TEST:** Buscar pedido por ID
-- [ ] **TEST:** Buscar pedido por código único (ruta pública, sin auth)
-- [ ] **TEST:** Actualizar datos de un pedido
-- [ ] **TEST:** Cambiar estado de un pedido
-- [ ] **TEST:** Filtrar pedidos por estado
-- [ ] **TEST:** Filtrar pedidos por cliente
-- [ ] **TEST:** Eliminar un pedido
-- [ ] **TEST:** Verificar que al eliminar cliente se eliminan sus pedidos (CASCADE)
+- [x] Crear módulo, controlador y servicio de pedidos
+- [x] Crear entidad Pedido con TypeORM
+- [x] Crear DTOs para validación (crear y actualizar pedido)
+- [x] Implementar generación automática de código único
+- [x] Implementar CRUD completo de pedidos
+- [x] Implementar cambio de estados del pedido
+- [x] Implementar consulta pública por código único (sin autenticación)
+- [x] Implementar filtros por estado y cliente
+- [x] **TEST:** Crear un pedido y verificar que se guarda en BD
+- [x] **TEST:** Verificar que el código único se genera automáticamente
+- [x] **TEST:** Verificar que el código único es realmente único
+- [x] **TEST:** Verificar que el saldo pendiente inicial es igual al precio total
+- [x] **TEST:** Obtener listado de todos los pedidos
+- [x] **TEST:** Buscar pedido por ID
+- [x] **TEST:** Buscar pedido por código único (ruta pública, sin auth)
+- [x] **TEST:** Actualizar datos de un pedido
+- [x] **TEST:** Cambiar estado de un pedido
+- [x] **TEST:** Filtrar pedidos por estado
+- [x] **TEST:** Filtrar pedidos por cliente
+- [x] **TEST:** Eliminar un pedido
+- [x] **TEST:** Verificar que al eliminar cliente se eliminan sus pedidos (CASCADE)
 
 ### 2.4 Implementación del Módulo de Abonos
-- [ ] Crear módulo, controlador y servicio de abonos
-- [ ] Crear entidad Abono con TypeORM
-- [ ] Crear DTOs para validación (crear abono)
-- [ ] Implementar creación de abonos
-- [ ] Implementar cálculo automático de saldo pendiente
-- [ ] Implementar listado de abonos por pedido
-- [ ] Implementar eliminación de abonos (con recálculo de saldo)
-- [ ] **TEST:** Crear un abono y verificar que se guarda en BD
-- [ ] **TEST:** Verificar que el saldo pendiente se actualiza automáticamente al crear abono
-- [ ] **TEST:** Crear múltiples abonos y verificar cálculo correcto del saldo
-- [ ] **TEST:** Crear abono que cubra el total y verificar que saldo quede en 0
-- [ ] **TEST:** Obtener listado de abonos de un pedido específico
-- [ ] **TEST:** Eliminar un abono y verificar que el saldo se recalcula
-- [ ] **TEST:** Verificar que al eliminar pedido se eliminan sus abonos (CASCADE)
-- [ ] **TEST:** Probar que no se puede crear abono para pedido inexistente
+- [x] Crear módulo, controlador y servicio de abonos
+- [x] Crear entidad Abono con TypeORM
+- [x] Crear DTOs para validación (crear abono)
+- [x] Implementar creación de abonos
+- [x] Implementar cálculo automático de saldo pendiente
+- [x] Implementar listado de abonos por pedido
+- [x] Implementar eliminación de abonos (con recálculo de saldo)
+- [x] **TEST:** Crear un abono y verificar que se guarda en BD
+- [x] **TEST:** Verificar que el saldo pendiente se actualiza automáticamente al crear abono
+- [x] **TEST:** Crear múltiples abonos y verificar cálculo correcto del saldo
+- [x] **TEST:** Crear abono que cubra el total y verificar que saldo quede en 0
+- [x] **TEST:** Obtener listado de abonos de un pedido específico
+- [x] **TEST:** Eliminar un abono y verificar que el saldo se recalcula
+- [x] **TEST:** Verificar que al eliminar pedido se eliminan sus abonos (CASCADE)
+- [x] **TEST:** Probar que no se puede crear abono para pedido inexistente
 
 ### 2.5 Implementación de Endpoints Adicionales
-- [ ] Crear endpoint para estadísticas del dashboard (pedidos activos, ingresos, etc.)
-- [ ] Crear endpoint para obtener resumen de pedidos listos
-- [ ] Crear endpoint para búsqueda avanzada de pedidos
-- [ ] Implementar paginación en listados
-- [ ] **TEST:** Probar endpoint de estadísticas con datos reales
-- [ ] **TEST:** Verificar cálculo correcto de ingresos del mes
-- [ ] **TEST:** Verificar conteo correcto de pedidos por estado
-- [ ] **TEST:** Probar paginación con diferentes tamaños de página
-- [ ] **TEST:** Probar búsqueda avanzada con múltiples filtros
+- [x] Crear endpoint para estadísticas del dashboard (pedidos activos, ingresos, etc.)
+- [x] Crear endpoint para obtener resumen de pedidos listos
+- [x] Crear endpoint para búsqueda avanzada de pedidos
+- [x] Implementar paginación en listados
+- [x] **TEST:** Probar endpoint de estadísticas con datos reales
+- [x] **TEST:** Verificar cálculo correcto de ingresos del mes
+- [x] **TEST:** Verificar conteo correcto de pedidos por estado
+- [x] **TEST:** Probar paginación con diferentes tamaños de página
+- [x] **TEST:** Probar búsqueda avanzada con múltiples filtros
 
 ### 2.6 Implementación de Seguridad y Validaciones
-- [ ] Configurar pipes de validación global
-- [ ] Implementar interceptor de errores
-- [ ] Implementar sanitización de datos
-- [ ] Configurar rate limiting básico
-- [ ] Implementar logging de acciones críticas
-- [ ] **TEST:** Enviar datos inválidos y verificar que se rechacen
-- [ ] **TEST:** Verificar que errores se manejen correctamente
-- [ ] **TEST:** Probar límite de peticiones (rate limiting)
+- [x] Configurar pipes de validación global
+- [x] Implementar interceptor de errores
+- [x] Implementar sanitización de datos
+- [x] Configurar rate limiting básico
+- [x] Implementar logging de acciones críticas
+- [x] **TEST:** Enviar datos inválidos y verificar que se rechacen
+- [x] **TEST:** Verificar que errores se manejen correctamente
+- [x] **TEST:** Probar límite de peticiones (rate limiting)
 
 ---
 
@@ -480,7 +480,7 @@
 ## 🎯 Notas Importantes
 
 - **MARCA CADA TAREA** cuando la completes usando `[x]` en lugar de `[ ]`
-- **IDIOMA OBLIGATORIO**: Todo el código (variables, métodos, comentarios) debe estar en **ESPAÑOL**.
+- **IDIOMA OBLIGATORIO**: Todo el código (nombre de carpetas y archivos, variables, métodos, comentarios) debe estar en **ESPAÑOL**.
 - Las fases 1-3 son **CRÍTICAS** y deben completarse antes de avanzar
 - La fase 4 es importante para la experiencia móvil
 - La fase 5 asegura la calidad del producto
