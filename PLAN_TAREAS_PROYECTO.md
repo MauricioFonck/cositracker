@@ -137,17 +137,17 @@
 ## Fase 3: Desarrollo del Frontend - Funcionalidad Core
 
 ### 3.1 Implementación de Servicios Core
-- [ ] Crear servicio de autenticación (manejo de tokens, login, logout)
-- [ ] Crear servicio de clientes (CRUD)
-- [ ] Crear servicio de pedidos (CRUD, consultas)
-- [ ] Crear servicio de abonos (CRUD)
-- [ ] Crear interceptor HTTP para agregar token JWT automáticamente
-- [ ] Crear interceptor para manejo de errores HTTP
-- [ ] Crear modelos TypeScript para todas las entidades
-- [ ] **TEST:** Probar que el token se guarda correctamente en localStorage
-- [ ] **TEST:** Probar que el interceptor agrega el token a las peticiones
-- [ ] **TEST:** Probar que el servicio de auth detecta si hay sesión activa
-- [ ] **TEST:** Verificar que logout limpia el token correctamente
+- [x] Crear servicio de autenticación (manejo de tokens, login, logout)
+- [x] Crear servicio de clientes (CRUD)
+- [x] Crear servicio de pedidos (CRUD, consultas)
+- [x] Crear servicio de abonos (CRUD)
+- [x] Crear interceptor HTTP para agregar token JWT automáticamente
+- [x] Crear interceptor para manejo de errores HTTP
+- [x] Crear modelos TypeScript para todas las entidades
+- [x] **TEST:** Probar que el token se guarda correctamente en localStorage
+- [x] **TEST:** Probar que el interceptor agrega el token a las peticiones
+- [x] **TEST:** Probar que el servicio de auth detecta si hay sesión activa
+- [x] **TEST:** Verificar que logout limpia el token correctamente
 
 ### 3.2 Implementación de Guards y Utilidades
 - [ ] Crear AuthGuard para proteger rutas administrativas
