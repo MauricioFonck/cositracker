@@ -1,0 +1,131 @@
+<div class="pedidos-container">
+    <div class="page-header">
+        <div class="header-info">
+            <h1>Gestión de Pedidos</h1>
+            <p>Controla y haz seguimiento a todos los trabajos activos</p>
+        </div>
+        <button class="btn-primary" (click)="abrirCrear()">
+            <span class="icon">+</span> Nuevo Pedido
+        </button>
+    </div>
+
+    <div class="filters-card">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Buscar por código, tipo de trabajo..." (input)="onBusqueda($event)"
+                [value]="terminoBusqueda()">
+        </div>
+
+        <div class="filters-group">
+            <select [ngModel]="estadoFiltro()" (ngModelChange)="filtrarPorEstado($event)" class="filter-select">
+                <option value="">Todos los estados</option>
+                <option *ngFor="let est of estados" [value]="est.value">{{ est.label }}</option>
+            </select>
+
+            <select [ngModel]="clienteFiltro()" (ngModelChange)="filtrarPorCliente($event)" class="filter-select">
+                <option value="">Todos los clientes</option>
+                <option *ngFor="let cliente of clientes()" [value]="cliente.id">{{ cliente.nombre }}</option>
+            </select>
+
+            <div class="date-filters">
+                <input type="date" [ngModel]="fechaInicio()" (ngModelChange)="fechaInicio.set($event); cargarPedidos()"
+                    class="filter-date" title="Fecha inicio">
+                <span>a</span>
+                <input type="date" [ngModel]="fechaFin()" (ngModelChange)="fechaFin.set($event); cargarPedidos()"
+                    class="filter-date" title="Fecha fin">
+            </div>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Cliente</th>
+                        <th>Trabajo</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th>Saldo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="cargando()">
+                        <td colspan="7" class="text-center py-4">
+                            <div class="spinner"></div> Cargando pedidos...
+                        </td>
+                    </tr>
+                    <tr *ngIf="!cargando() && pedidos().length === 0">
+                        <td colspan="7" class="text-center py-4">
+                            No se encontraron pedidos.
+                        </td>
+                    </tr>
+                    <tr *ngFor="let pedido of pedidos()">
+                        <td>
+                            <span class="order-code">{{ pedido.codigo }}</span>
+                        </td>
+                        <td>
+                            <div class="client-info">
+                                <strong>{{ pedido.cliente?.nombre }}</strong>
+                                <small>{{ pedido.cliente?.telefono }}</small>
+                            </div>
+                        </td>
+                        <td>{{ pedido.tipoTrabajo }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="obtenerClaseEstado(pedido.estado)">
+                                {{ pedido.estado }}
+                            </span>
+                        </td>
+                        <td>{{ pedido.precioTotal | currency }}</td>
+                        <td>
+                            <span [class.text-danger]="pedido.saldoPendiente > 0">
+                                {{ pedido.saldoPendiente | currency }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon view" [routerLink]="['/admin/pedidos', pedido.id]"
+                                    title="Ver Detalle">👁️</button>
+                                <button class="btn-icon edit" (click)="abrirEditar(pedido)" title="Editar">✏️</button>
+                                <div class="quick-status">
+                                    <button class="btn-icon status" title="Cambiar Estado">🔄</button>
+                                    <div class="status-menu">
+                                        <button *ngFor="let est of estados"
+                                            (click)="cambiarEstadoRapido(pedido, est.value)">
+                                            {{ est.label }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" *ngIf="totalPaginas > 1">
+            <button [disabled]="paginaActual() === 1" (click)="cambiarPagina(paginaActual() - 1)" class="btn-prev">
+                Anterior </button>
+            <span class="pagination-info">Página {{ paginaActual() }} de {{ totalPaginas }}</span>
+            <button [disabled]="paginaActual() === totalPaginas" (click)="cambiarPagina(paginaActual() + 1)"
+                class="btn-next"> Siguiente </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Formulario -->
+<div class="modal-overlay" *ngIf="mostrarModal()">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2>{{ pedidoSeleccionado() ? 'Editar Pedido' : 'Nuevo Pedido' }}</h2>
+            <button class="btn-close" (click)="cerrarModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <app-pedido-form [pedido]="pedidoSeleccionado()" (guardado)="onPedidoGuardado()"
+                (cancelado)="cerrarModal()">
+            </app-pedido-form>
+        </div>
+    </div>
+</div>

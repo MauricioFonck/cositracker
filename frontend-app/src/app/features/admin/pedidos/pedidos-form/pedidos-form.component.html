@@ -1,0 +1,90 @@
+<form [formGroup]="pedidoForm" (ngSubmit)="onSubmit()" class="form-container">
+    <div class="form-grid">
+        <div class="form-group full-width">
+            <div class="label-with-action">
+                <label for="clienteId">Cliente *</label>
+                <button type="button" class="btn-text" (click)="mostrarNuevoCliente.set(!mostrarNuevoCliente())">
+                    {{ mostrarNuevoCliente() ? '← Seleccionar existente' : '+ Crear nuevo cliente' }}
+                </button>
+            </div>
+
+            <div *ngIf="!mostrarNuevoCliente()">
+                <select id="clienteId" formControlName="clienteId" class="form-control">
+                    <option value="">Seleccione un cliente</option>
+                    <option *ngFor="let cliente of clientes()" [value]="cliente.id">
+                        {{ cliente.nombre }} ({{ cliente.documento }})
+                    </option>
+                </select>
+            </div>
+
+            <div *ngIf="mostrarNuevoCliente()" class="nested-form">
+                <app-cliente-form (guardado)="onClienteCreado($event)"
+                    (cancelado)="mostrarNuevoCliente.set(false)"></app-cliente-form>
+            </div>
+
+            <div *ngIf="pedidoForm.get('clienteId')?.touched && pedidoForm.get('clienteId')?.invalid && !mostrarNuevoCliente()"
+                class="error-msg">
+                El cliente es requerido.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="tipoTrabajo">Tipo de Trabajo *</label>
+            <input type="text" id="tipoTrabajo" formControlName="tipoTrabajo" class="form-control"
+                placeholder="Ej: Reparación de motor, Estampado...">
+            <div *ngIf="pedidoForm.get('tipoTrabajo')?.touched && pedidoForm.get('tipoTrabajo')?.invalid"
+                class="error-msg">
+                El tipo de trabajo es requerido (mín. 3 caracteres).
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="precioTotal">Precio Total *</label>
+            <div class="input-prefix">
+                <span>$</span>
+                <input type="number" id="precioTotal" formControlName="precioTotal" class="form-control">
+            </div>
+            <div *ngIf="pedidoForm.get('precioTotal')?.touched && pedidoForm.get('precioTotal')?.invalid"
+                class="error-msg">
+                Ingrese un precio válido.
+            </div>
+        </div>
+
+        <div class="form-group full-width">
+            <label for="descripcion">Descripción del Trabajo *</label>
+            <textarea id="descripcion" formControlName="descripcion" rows="3" class="form-control"
+                placeholder="Detalle los requerimientos..."></textarea>
+            <div *ngIf="pedidoForm.get('descripcion')?.touched && pedidoForm.get('descripcion')?.invalid"
+                class="error-msg">
+                La descripción es requerida.
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="!pedido">
+            <label for="abonoInicial">Abono Inicial (Opcional)</label>
+            <div class="input-prefix">
+                <span>$</span>
+                <input type="number" id="abonoInicial" formControlName="abonoInicial" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="fechaEntrega">Fecha Estimada de Entrega</label>
+            <input type="date" id="fechaEntrega" formControlName="fechaEntrega" class="form-control">
+        </div>
+
+        <div class="form-group full-width">
+            <label for="notas">Notas Internas</label>
+            <textarea id="notas" formControlName="notas" rows="2" class="form-control"
+                placeholder="Información adicional relevante..."></textarea>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancelar()" [disabled]="cargando()">Cancelar</button>
+        <button type="submit" class="btn-primary" [disabled]="pedidoForm.invalid || cargando()">
+            <span *ngIf="cargando()" class="spinner-small"></span>
+            {{ pedido ? 'Actualizar Pedido' : 'Crear Pedido' }}
+        </button>
+    </div>
+</form>

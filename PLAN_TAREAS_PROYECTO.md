@@ -211,16 +211,16 @@
 - [x] **TEST:** Probar que no permite duplicar documentos
 
 ### 3.7 Desarrollo del Panel Administrativo - Gestión de Pedidos
-- [ ] Crear componente de listado de pedidos
-- [ ] Implementar tabla con todos los pedidos
-- [ ] Implementar filtros por estado, cliente y fechas
-- [ ] Crear componente de formulario para crear pedido
-- [ ] Implementar selección de cliente existente o crear nuevo
-- [ ] Crear componente de formulario para editar pedido
-- [ ] Implementar cambio rápido de estados
-- [ ] Crear componente para ver detalle completo del pedido
-- [ ] Mostrar timeline de cambios de estado
-- [ ] Mostrar historial de abonos
+- [x] Crear componente de listado de pedidos
+- [x] Implementar tabla con todos los pedidos
+- [x] Implementar filtros por estado, cliente y fechas
+- [x] Crear componente de formulario para crear pedido
+- [x] Implementar selección de cliente existente o crear nuevo
+- [x] Crear componente de formulario para editar pedido
+- [x] Implementar cambio rápido de estados
+- [x] Crear componente para ver detalle completo del pedido
+- [x] Mostrar timeline de cambios de estado
+- [x] Mostrar historial de abonos
 - [ ] **TEST:** Crear un pedido y verificar que aparece en la lista
 - [ ] **TEST:** Verificar que el código único se genera y muestra
 - [ ] **TEST:** Editar un pedido y verificar que se actualiza

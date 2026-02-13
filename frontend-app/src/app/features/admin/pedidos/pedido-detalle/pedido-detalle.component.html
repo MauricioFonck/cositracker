@@ -1,0 +1,134 @@
+<div class="detalle-container" *ngIf="pedido() as p; else loading">
+    <div class="header-actions">
+        <button class="btn-back" routerLink="/admin/pedidos">← Volver al listado</button>
+        <div class="status-selector">
+            <label>Estado del Pedido:</label>
+            <select [ngModel]="p.estado" (ngModelChange)="cambiarEstado($event)" class="status-select"
+                [ngClass]="obtenerClaseEstado(p.estado)">
+                <option *ngFor="let est of estados" [value]="est.value">{{ est.label }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="detalle-grid">
+        <!-- Columna Principal: Información y Abonos -->
+        <div class="main-column">
+            <div class="card info-card">
+                <div class="card-header">
+                    <div class="order-id">
+                        <span class="label">PEDIDO</span>
+                        <h3>{{ p.codigo }}</h3>
+                    </div>
+                    <div class="work-type">
+                        <h3>{{ p.tipoTrabajo }}</h3>
+                        <p>{{ p.descripcion }}</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="label">Cliente</span>
+                            <strong>{{ p.cliente?.nombre }}</strong>
+                            <p>{{ p.cliente?.telefono }} | {{ p.cliente?.email || 'Sin email' }}</p>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Fecha de Entrega</span>
+                            <strong>{{ (p.fechaEntrega | date:'dd/MM/yyyy') || 'No especificada' }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="notas-box" *ngIf="p.notas">
+                        <span class="label">Notas Internas</span>
+                        <p>{{ p.notas }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card payments-card">
+                <div class="card-header">
+                    <h3>Historial de Abonos</h3>
+                    <div class="payment-summary">
+                        <span>Total: <strong>{{ p.precioTotal | currency }}</strong></span>
+                        <span>Pendiente: <strong class="text-danger">{{ p.saldoPendiente | currency }}</strong></span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" [style.width.%]="porcentajePago"></div>
+                        </div>
+                        <small>{{ porcentajePago }}% pagado</small>
+                    </div>
+
+                    <div class="abonos-list">
+                        <div class="abono-item" *ngFor="let abono of abonos()">
+                            <div class="abono-info">
+                                <strong>{{ abono.monto | currency }}</strong>
+                                <small>{{ abono.fecha | date:'dd/MM/yyyy HH:mm' }}</small>
+                            </div>
+                            <p class="abono-nota" *ngIf="abono.nota">{{ abono.nota }}</p>
+                        </div>
+                        <div *ngIf="abonos().length === 0" class="empty-state">
+                            No hay abonos registrados todavía.
+                        </div>
+                    </div>
+
+                    <div class="nuevo-abono" *ngIf="p.saldoPendiente > 0">
+                        <h4>Registrar Nuevo Abono</h4>
+                        <div class="abono-form">
+                            <div class="input-group">
+                                <label>Monto</label>
+                                <input type="number" [(ngModel)]="montoNuevoAbono" placeholder="0.00">
+                            </div>
+                            <div class="input-group">
+                                <label>Nota (Opcional)</label>
+                                <input type="text" [(ngModel)]="notaNuevoAbono" placeholder="Ej: Pago en efectivo">
+                            </div>
+                            <button class="btn-primary" (click)="registrarAbono()"
+                                [disabled]="montoNuevoAbono() <= 0 || cargandoAbono()">
+                                <span *ngIf="cargandoAbono()" class="spinner-small"></span>
+                                Registrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Lateral: Línea de Tiempo -->
+        <div class="side-column">
+            <div class="card timeline-card">
+                <div class="card-header">
+                    <h3>Línea de Tiempo</h3>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-event active">
+                            <div class="marker"></div>
+                            <div class="event-content">
+                                <strong>Pedido {{ p.estado }}</strong>
+                                <small>Estado Actual</small>
+                            </div>
+                        </div>
+                        <div class="timeline-event">
+                            <div class="marker"></div>
+                            <div class="event-content">
+                                <strong>Creado</strong>
+                                <small>{{ p.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando información del pedido...</p>
+    </div>
+</ng-template>

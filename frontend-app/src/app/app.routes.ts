@@ -42,6 +42,16 @@ export const routes: Routes = [
                 path: 'clientes',
                 loadComponent: () => import('./features/admin/clientes/clientes-list/clientes-list.component')
                     .then(m => m.ClientesListComponent)
+            },
+            {
+                path: 'pedidos',
+                loadComponent: () => import('./features/admin/pedidos/pedidos-list/pedidos-list.component')
+                    .then(m => m.PedidosListComponent)
+            },
+            {
+                path: 'pedidos/:id',
+                loadComponent: () => import('./features/admin/pedidos/pedido-detalle/pedido-detalle.component')
+                    .then(m => m.PedidoDetalleComponent)
             }
         ]
     },

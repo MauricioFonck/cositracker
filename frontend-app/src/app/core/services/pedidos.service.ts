@@ -16,6 +16,8 @@ export class PedidosService {
         termino?: string,
         estado?: EstadoPedido,
         clienteId?: string,
+        fechaInicio?: string,
+        fechaFin?: string,
         page: number = 1,
         limit: number = 10
     ): Observable<{ data: Pedido[], total: number }> {
@@ -23,6 +25,8 @@ export class PedidosService {
         if (termino) params.termino = termino;
         if (estado) params.estado = estado;
         if (clienteId) params.clienteId = clienteId;
+        if (fechaInicio) params.fechaInicio = fechaInicio;
+        if (fechaFin) params.fechaFin = fechaFin;
 
         return this.http.get<{ data: Pedido[], total: number }>(this.apiUrl, { params });
     }
