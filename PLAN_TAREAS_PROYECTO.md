@@ -150,13 +150,13 @@
 - [x] **TEST:** Verificar que logout limpia el token correctamente
 
 ### 3.2 Implementación de Guards y Utilidades
-- [ ] Crear AuthGuard para proteger rutas administrativas
-- [ ] Crear guard para redirección si ya está autenticado
-- [ ] Crear pipes y validadores personalizados
-- [ ] Crear utilidades para formateo de fechas y montos
-- [ ] **TEST:** Probar que AuthGuard bloquea acceso sin autenticación
-- [ ] **TEST:** Probar que AuthGuard permite acceso con token válido
-- [ ] **TEST:** Verificar redirección a login cuando no hay token
+- [x] Crear AuthGuard para proteger rutas administrativas
+- [x] Crear guard para redirección si ya está autenticado
+- [x] Crear pipes y validadores personalizados
+- [x] Crear utilidades para formateo de fechas y montos
+- [x] **TEST:** Probar que AuthGuard bloquea acceso sin autenticación
+- [x] **TEST:** Probar que AuthGuard permite acceso con token válido
+- [x] **TEST:** Verificar redirección a login cuando no hay token
 
 ### 3.3 Desarrollo de la Sección Pública (Consulta de Pedidos)
 - [ ] Crear componente de consulta inicial (formulario de búsqueda)
