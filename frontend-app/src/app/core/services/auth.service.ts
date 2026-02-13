@@ -40,16 +40,17 @@ export class AuthService {
         return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
             tap(response => {
                 localStorage.setItem('token', response.access_token);
-                // Assuming the response includes user info directly or we decode it.
-                // If the backend returns 'user' in response:
                 if (response.user) {
                     this._currentUser.set(response.user);
                 } else {
-                    // Fetch profile if not returned
                     this.getProfile().subscribe(user => this._currentUser.set(user));
                 }
             })
         );
+    }
+
+    register(data: { fullName: string; email: string; password: string }): Observable<User> {
+        return this.http.post<User>(`${this.apiUrl}/register`, data);
     }
 
     logout(): void {

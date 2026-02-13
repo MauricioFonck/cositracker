@@ -1,0 +1,91 @@
+<div class="login-container">
+    <div class="background-decoration">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo-container">
+                <div class="logo-icon">✨</div>
+                <h1 class="logo-text">CosiTracker</h1>
+            </div>
+            <p class="subtitulo">Crear cuenta administrativa</p>
+        </div>
+
+        <div class="success-message" *ngIf="exito()">
+            <div class="icon">✅</div>
+            <h3>¡Registro Exitoso!</h3>
+            <p>Tu cuenta ha sido creada. Serás redirigido al login en unos segundos...</p>
+        </div>
+
+        <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="login-form" *ngIf="!exito()">
+
+            <div class="error-global" *ngIf="error()">
+                <p class="error-message">{{ error() }}</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nombre Completo</label>
+                <div class="input-wrapper">
+                    <input type="text" formControlName="fullName" class="form-input" placeholder="Ej. Ana García"
+                        [class.error]="f['fullName'].invalid && f['fullName'].touched">
+                </div>
+                <div class="error-message-field" *ngIf="f['fullName'].invalid && f['fullName'].touched">
+                    {{ obtenerError('fullName') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Correo Electrónico</label>
+                <div class="input-wrapper">
+                    <input type="email" formControlName="email" class="form-input" placeholder="ana@ejemplo.com"
+                        [class.error]="f['email'].invalid && f['email'].touched">
+                </div>
+                <div class="error-message-field" *ngIf="f['email'].invalid && f['email'].touched">
+                    {{ obtenerError('email') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Contraseña</label>
+                <div class="input-wrapper">
+                    <input [type]="mostrarPassword() ? 'text' : 'password'" formControlName="password"
+                        class="form-input" placeholder="••••••••"
+                        [class.error]="f['password'].invalid && f['password'].touched">
+                    <button type="button" class="toggle-password" (click)="toggleMostrarPassword()">
+                        {{ mostrarPassword() ? '👁️‍🗨️' : '👁️' }}
+                    </button>
+                </div>
+                <div class="error-message-field" *ngIf="f['password'].invalid && f['password'].touched">
+                    {{ obtenerError('password') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Confirmar Contraseña</label>
+                <div class="input-wrapper">
+                    <input [type]="mostrarConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword"
+                        class="form-input" placeholder="••••••••"
+                        [class.error]="(f['confirmPassword'].invalid || registroForm.hasError('mismatch')) && f['confirmPassword'].touched">
+                    <button type="button" class="toggle-password" (click)="toggleMostrarConfirmPassword()">
+                        {{ mostrarConfirmPassword() ? '👁️‍🗨️' : '👁️' }}
+                    </button>
+                </div>
+                <div class="error-message-field"
+                    *ngIf="(f['confirmPassword'].invalid || registroForm.hasError('mismatch')) && f['confirmPassword'].touched">
+                    {{ obtenerError('confirmPassword') }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="cargando()">
+                {{ cargando() ? 'Procesando...' : 'Crear Cuenta' }}
+            </button>
+
+            <div class="login-footer">
+                <p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
+            </div>
+        </form>
+    </div>
+</div>

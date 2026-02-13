@@ -174,13 +174,14 @@
 
 ### 3.4 Desarrollo de la Sección de Autenticación
 - [x] Crear componente de login
-- [x] Implementar formulario de inicio de sesión
-- [x] Implementar validaciones en formulario
-- [x] Implementar manejo de errores de autenticación
+- [x] Crear componente de registro (registro de administradores)
+- [x] Implementar formulario de inicio de sesión y registro
+- [x] Implementar validaciones en ambos formularios
+- [x] Implementar manejo de errores de autenticación y registro
 - [x] Implementar redirección automática tras login exitoso
 - [x] **TEST:** Probar login con credenciales correctas
-- [x] **TEST:** Probar login con credenciales incorrectas
-- [x] **TEST:** Verificar validaciones de campos vacíos
+- [x] **TEST:** Probar registro de nuevo administrador
+- [x] **TEST:** Verificar validaciones de campos vacíos y correos duplicados
 - [x] **TEST:** Verificar redirección al dashboard tras login exitoso (Temporalmente redirige a consulta)
 
 ### 3.5 Desarrollo del Panel Administrativo - Dashboard
