@@ -1,0 +1,50 @@
+<div class="admin-layout" [class.sidebar-cerrado]="!sidebarAbierto">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">📦</span>
+            <h1 class="logo-text">CosiTracker</h1>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li *ngFor="let item of menuItems">
+                    <a [routerLink]="item.ruta" routerLinkActive="active" class="nav-link">
+                        <span class="nav-icon">{{ item.icon }}</span>
+                        <span class="nav-text">{{ item.texto }}</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button (click)="cerrarSesion()" class="btn-logout">
+                <span class="nav-icon">🚪</span>
+                <span class="nav-text">Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <header class="top-header">
+            <button (click)="toggleSidebar()" class="btn-toggle">
+                {{ sidebarAbierto ? '←' : '→' }}
+            </button>
+
+            <div class="header-user">
+                <div class="user-info">
+                    <span class="user-name">{{ usuario()?.fullName || 'Administrador' }}</span>
+                    <span class="user-role">Admin</span>
+                </div>
+                <div class="user-avatar">
+                    {{ (usuario()?.fullName || 'A')[0].toUpperCase() }}
+                </div>
+            </div>
+        </header>
+
+        <section class="content-area">
+            <router-outlet></router-outlet>
+        </section>
+    </main>
+</div>

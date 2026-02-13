@@ -1,0 +1,115 @@
+<div class="login-container">
+    <!-- Fondo decorativo -->
+    <div class="background-decoration">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <!-- Card de Login -->
+    <div class="login-card">
+        <!-- Header -->
+        <div class="login-header">
+            <div class="logo-container">
+                <div class="logo-icon">📦</div>
+                <h1 class="logo-text">CosiTracker</h1>
+            </div>
+            <p class="subtitulo">Panel Administrativo</p>
+        </div>
+
+        <!-- Formulario -->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+            <!-- Mensaje de Error Global -->
+            <div class="error-global" *ngIf="error()" [@fadeIn]>
+                <div class="error-icon">⚠️</div>
+                <div class="error-content">
+                    <p class="error-message">{{ error() }}</p>
+                    <button type="button" class="error-close" (click)="limpiarError()">×</button>
+                </div>
+            </div>
+
+            <!-- Campo Email -->
+            <div class="form-group">
+                <label for="email" class="form-label">
+                    <span class="label-icon">📧</span>
+                    Correo Electrónico
+                </label>
+                <div class="input-wrapper" [class.error]="emailControl?.invalid && emailControl?.touched">
+                    <input id="email" type="email" formControlName="email" class="form-input"
+                        placeholder="tu@correo.com" autocomplete="email"
+                        [class.error]="emailControl?.invalid && emailControl?.touched" />
+                    <div class="input-icon">
+                        <span *ngIf="emailControl?.valid" class="icon-valid">✓</span>
+                    </div>
+                </div>
+                <div class="error-message-field" *ngIf="emailControl?.invalid && emailControl?.touched">
+                    {{ obtenerErrorEmail() }}
+                </div>
+            </div>
+
+            <!-- Campo Password -->
+            <div class="form-group">
+                <label for="password" class="form-label">
+                    <span class="label-icon">🔒</span>
+                    Contraseña
+                </label>
+                <div class="input-wrapper" [class.error]="passwordControl?.invalid && passwordControl?.touched">
+                    <input id="password" [type]="mostrarPassword() ? 'text' : 'password'" formControlName="password"
+                        class="form-input" placeholder="••••••••" autocomplete="current-password"
+                        [class.error]="passwordControl?.invalid && passwordControl?.touched" />
+                    <button type="button" class="toggle-password" (click)="toggleMostrarPassword()"
+                        [attr.aria-label]="mostrarPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                        <span *ngIf="!mostrarPassword()">👁️</span>
+                        <span *ngIf="mostrarPassword()">👁️‍🗨️</span>
+                    </button>
+                </div>
+                <div class="error-message-field" *ngIf="passwordControl?.invalid && passwordControl?.touched">
+                    {{ obtenerErrorPassword() }}
+                </div>
+            </div>
+
+            <!-- Botón de Submit -->
+            <button type="submit" class="btn-submit" [disabled]="cargando()" [class.loading]="cargando()">
+                <span *ngIf="!cargando()" class="btn-text">
+                    <span class="btn-icon">🚀</span>
+                    Iniciar Sesión
+                </span>
+                <span *ngIf="cargando()" class="btn-loading">
+                    <span class="spinner"></span>
+                    Iniciando sesión...
+                </span>
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <p class="footer-text">
+                <span class="footer-icon">ℹ️</span>
+                Sistema de Gestión de Pedidos
+            </p>
+            <a href="/consulta" class="footer-link">
+                ← Volver a consulta pública
+            </a>
+        </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="info-section">
+        <div class="info-card">
+            <div class="info-icon">✨</div>
+            <h3>Gestiona tus pedidos</h3>
+            <p>Administra clientes, pedidos y abonos desde un solo lugar</p>
+        </div>
+        <div class="info-card">
+            <div class="info-icon">📊</div>
+            <h3>Estadísticas en tiempo real</h3>
+            <p>Visualiza el estado de tu negocio con reportes actualizados</p>
+        </div>
+        <div class="info-card">
+            <div class="info-icon">🔐</div>
+            <h3>Seguro y confiable</h3>
+            <p>Tus datos están protegidos con encriptación de última generación</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,195 @@
+<div class="consulta-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <h1 class="titulo-principal">
+        <span class="icono">📦</span>
+        CosiTracker
+      </h1>
+      <p class="subtitulo">Consulta el estado de tu pedido</p>
+    </div>
+  </header>
+
+  <!-- Formulario de Búsqueda -->
+  <div class="busqueda-section" *ngIf="!mostrarDetalle">
+    <div class="busqueda-card">
+      <div class="icono-busqueda">🔍</div>
+      <h2>Buscar Pedido</h2>
+      <p class="instrucciones">
+        Ingresa el código único de tu pedido para consultar su estado
+      </p>
+
+      <form (ngSubmit)="buscarPedido()" class="form-busqueda">
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="codigoBusqueda"
+            name="codigo"
+            placeholder="Ej: ABC123456"
+            class="input-codigo"
+            [disabled]="buscando"
+            autocomplete="off"
+            maxlength="20"
+          />
+          <button 
+            type="submit" 
+            class="btn-buscar"
+            [disabled]="buscando || !codigoBusqueda.trim()"
+          >
+            <span *ngIf="!buscando">Buscar</span>
+            <span *ngIf="buscando" class="spinner">⏳ Buscando...</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Mensaje de Error -->
+      <div class="mensaje-error" *ngIf="error">
+        <span class="icono-error">⚠️</span>
+        <p>{{ error }}</p>
+      </div>
+
+      <!-- Ayuda -->
+      <div class="ayuda">
+        <p class="ayuda-titulo">💡 ¿Dónde encuentro mi código?</p>
+        <p class="ayuda-texto">
+          El código único de tu pedido te fue enviado al momento de realizar tu orden.
+          Revisa tu correo electrónico o mensaje de confirmación.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detalle del Pedido -->
+  <div class="detalle-section" *ngIf="mostrarDetalle && pedidoEncontrado">
+    <div class="detalle-container">
+      <!-- Botón Volver -->
+      <button class="btn-volver" (click)="nuevaBusqueda()">
+        ← Nueva Búsqueda
+      </button>
+
+      <!-- Header del Pedido -->
+      <div class="pedido-header">
+        <div class="codigo-grande">
+          <span class="label">Código de Pedido</span>
+          <span class="codigo">{{ pedidoEncontrado.codigo }}</span>
+        </div>
+        <div class="estado-badge" [style.background-color]="obtenerColorEstado(pedidoEncontrado.estado)">
+          {{ obtenerTextoEstado(pedidoEncontrado.estado) }}
+        </div>
+      </div>
+
+      <!-- Información del Cliente -->
+      <div class="info-card">
+        <h3 class="card-titulo">
+          <span class="icono">👤</span>
+          Información del Cliente
+        </h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Nombre:</span>
+            <span class="info-valor">{{ pedidoEncontrado.cliente?.nombre }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Documento:</span>
+            <span class="info-valor">{{ pedidoEncontrado.cliente?.documento }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Teléfono:</span>
+            <span class="info-valor">{{ pedidoEncontrado.cliente?.telefono }}</span>
+          </div>
+          <div class="info-item" *ngIf="pedidoEncontrado.cliente?.email">
+            <span class="info-label">Email:</span>
+            <span class="info-valor">{{ pedidoEncontrado.cliente?.email }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalles del Pedido -->
+      <div class="info-card">
+        <h3 class="card-titulo">
+          <span class="icono">📋</span>
+          Detalles del Pedido
+        </h3>
+        <div class="info-grid">
+          <div class="info-item full-width">
+            <span class="info-label">Tipo de Trabajo:</span>
+            <span class="info-valor">{{ pedidoEncontrado.tipoTrabajo }}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="info-label">Descripción:</span>
+            <span class="info-valor descripcion">{{ pedidoEncontrado.descripcion }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Fecha de Entrega:</span>
+            <span class="info-valor">{{ formatearFecha(pedidoEncontrado.fechaEntrega) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Fecha de Creación:</span>
+            <span class="info-valor">{{ formatearFecha(pedidoEncontrado.createdAt) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen Financiero -->
+      <div class="info-card resumen-financiero">
+        <h3 class="card-titulo">
+          <span class="icono">💰</span>
+          Resumen Financiero
+        </h3>
+        <div class="financiero-grid">
+          <div class="financiero-item">
+            <span class="financiero-label">Precio Total:</span>
+            <span class="financiero-valor">{{ pedidoEncontrado.precioTotal | number:'1.0-0' }} COP</span>
+          </div>
+          <div class="financiero-item">
+            <span class="financiero-label">Total Abonado:</span>
+            <span class="financiero-valor abonado">{{ calcularTotalAbonado() | number:'1.0-0' }} COP</span>
+          </div>
+          <div class="financiero-item destacado">
+            <span class="financiero-label">Saldo Pendiente:</span>
+            <span class="financiero-valor saldo">{{ pedidoEncontrado.saldoPendiente | number:'1.0-0' }} COP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listado de Abonos -->
+      <div class="info-card" *ngIf="pedidoEncontrado.abonos && pedidoEncontrado.abonos.length > 0">
+        <h3 class="card-titulo">
+          <span class="icono">💳</span>
+          Historial de Abonos
+        </h3>
+        <div class="abonos-lista">
+          <div class="abono-item" *ngFor="let abono of pedidoEncontrado.abonos">
+            <div class="abono-fecha">
+              {{ formatearFecha(abono.fecha) }}
+            </div>
+            <div class="abono-metodo">
+              {{ formatearMetodoPago(abono.metodoPago) }}
+            </div>
+            <div class="abono-monto">
+              {{ abono.monto | number:'1.0-0' }} COP
+            </div>
+            <div class="abono-nota" *ngIf="abono.nota">
+              <small>{{ abono.nota }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje si no hay abonos -->
+      <div class="info-card sin-abonos" *ngIf="!pedidoEncontrado.abonos || pedidoEncontrado.abonos.length === 0">
+        <p class="texto-sin-abonos">
+          <span class="icono">ℹ️</span>
+          Aún no se han registrado abonos para este pedido
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>¿Tienes preguntas? Contáctanos</p>
+    <p class="footer-copy">© 2026 CosiTracker - Sistema de Gestión de Pedidos</p>
+  </footer>
+</div>

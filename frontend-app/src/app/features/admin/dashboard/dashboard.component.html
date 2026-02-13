@@ -1,0 +1,105 @@
+<div class="dashboard">
+    <header class="dashboard-header">
+        <h2 class="title">Resumen del Negocio</h2>
+        <p class="subtitle">Bienvenido al panel de control de CosiTracker</p>
+    </header>
+
+    <!-- Tarjetas de Estadísticas -->
+    <div class="stats-grid" *ngIf="stats() as s">
+        <div class="stat-card">
+            <div class="stat-icon icon-blue">📦</div>
+            <div class="stat-info">
+                <span class="stat-label">Pedidos Activos</span>
+                <h3 class="stat-value">{{ s.pedidosActivos }}</h3>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon icon-amber">⏳</div>
+            <div class="stat-info">
+                <span class="stat-label">Pendientes</span>
+                <h3 class="stat-value">{{ pedidosPendientes }}</h3>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon icon-green">✅</div>
+            <div class="stat-info">
+                <span class="stat-label">Listos</span>
+                <h3 class="stat-value">{{ pedidosListos }}</h3>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon icon-purple">💰</div>
+            <div class="stat-info">
+                <span class="stat-label">Ingresos Mes</span>
+                <h3 class="stat-value">${{ s.ingresosMes | number }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skeleton/Loading state -->
+    <div class="stats-grid" *ngIf="!stats()">
+        <div class="stat-card skeleton" *ngFor="let i of [1,2,3,4]">
+            <div class="stat-icon gray"></div>
+            <div class="stat-info">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line large"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="dashboard-grid">
+        <!-- Pedidos Recientes -->
+        <div class="table-container">
+            <h3 class="section-title">Pedidos Recientes</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Cliente</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pedido of pedidosRecientes()">
+                        <td class="code">{{ pedido.codigo }}</td>
+                        <td>{{ pedido.cliente }}</td>
+                        <td>
+                            <span class="status-badge" [style.background-color]="obtenerColorEstado(pedido.estado)">
+                                {{ pedido.estado }}
+                            </span>
+                        </td>
+                        <td>${{ pedido.total | number }}</td>
+                        <td>
+                            <button class="btn-icon">👁️</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Accesos Rápidos -->
+        <div class="quick-actions">
+            <h3 class="section-title">Acciones Rápidas</h3>
+            <div class="actions-list">
+                <button class="action-btn">
+                    <span class="icon">➕</span>
+                    Nuevo Pedido
+                </button>
+                <button class="action-btn">
+                    <span class="icon">👤</span>
+                    Registrar Cliente
+                </button>
+                <button class="action-btn">
+                    <span class="icon">💵</span>
+                    Verificar Pagos
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
