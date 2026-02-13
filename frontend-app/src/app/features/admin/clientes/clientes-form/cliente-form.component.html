@@ -1,0 +1,57 @@
+<form [formGroup]="clienteForm" (ngSubmit)="onSubmit()" class="form-container">
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="nombre">Nombre Completo *</label>
+            <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Juan Pérez"
+                [class.invalid]="clienteForm.get('nombre')?.touched && clienteForm.get('nombre')?.invalid">
+            <div class="error-msg"
+                *ngIf="clienteForm.get('nombre')?.touched && clienteForm.get('nombre')?.errors?.['required']">
+                El nombre es obligatorio
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="documento">Documento de Identidad *</label>
+            <input type="text" id="documento" formControlName="documento" placeholder="CC, NIT o ID único"
+                [class.invalid]="clienteForm.get('documento')?.touched && clienteForm.get('documento')?.invalid">
+            <div class="error-msg"
+                *ngIf="clienteForm.get('documento')?.touched && clienteForm.get('documento')?.errors?.['required']">
+                El documento es obligatorio
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono / WhatsApp *</label>
+            <input type="text" id="telefono" formControlName="telefono" placeholder="Ej: 3001234567"
+                [class.invalid]="clienteForm.get('telefono')?.touched && clienteForm.get('telefono')?.invalid">
+            <div class="error-msg"
+                *ngIf="clienteForm.get('telefono')?.touched && clienteForm.get('telefono')?.errors?.['required']">
+                El teléfono es obligatorio
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Correo Electrónico (Opcional)</label>
+            <input type="email" id="email" formControlName="email" placeholder="ejemplo@correo.com"
+                [class.invalid]="clienteForm.get('email')?.touched && clienteForm.get('email')?.invalid">
+            <div class="error-msg"
+                *ngIf="clienteForm.get('email')?.touched && clienteForm.get('email')?.errors?.['email']">
+                Ingresa un correo válido
+            </div>
+        </div>
+    </div>
+
+    <div class="form-error" *ngIf="error()">
+        {{ error() }}
+    </div>
+
+    <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancelar()" [disabled]="cargando()">
+            Cancelar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="clienteForm.invalid || cargando()">
+            <span *ngIf="!cargando()">{{ cliente ? 'Actualizar' : 'Guardar' }} Cliente</span>
+            <span *ngIf="cargando()">Guardando...</span>
+        </button>
+    </div>
+</form>

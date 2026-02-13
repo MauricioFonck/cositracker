@@ -196,19 +196,19 @@
 - [x] **TEST:** Probar que el dashboard es responsive
 
 ### 3.6 Desarrollo del Panel Administrativo - Gestión de Clientes
-- [ ] Crear componente de listado de clientes
-- [ ] Implementar tabla con todos los clientes
-- [ ] Crear componente de formulario para crear cliente
-- [ ] Crear componente de formulario para editar cliente
-- [ ] Implementar búsqueda y filtrado de clientes
-- [ ] Implementar paginación
-- [ ] Implementar modales de confirmación para eliminar
-- [ ] **TEST:** Crear un cliente y verificar que aparece en la lista
-- [ ] **TEST:** Editar un cliente y verificar que se actualiza
-- [ ] **TEST:** Eliminar un cliente y verificar que desaparece
-- [ ] **TEST:** Probar búsqueda de clientes por nombre/documento
-- [ ] **TEST:** Verificar validaciones de formulario (campos requeridos)
-- [ ] **TEST:** Probar que no permite duplicar documentos
+- [x] Crear componente de listado de clientes
+- [x] Implementar tabla con todos los clientes
+- [x] Crear componente de formulario para crear cliente
+- [x] Crear componente de formulario para editar cliente
+- [x] Implementar búsqueda y filtrado de clientes
+- [x] Implementar paginación
+- [x] Implementar modales de confirmación para eliminar
+- [x] **TEST:** Crear un cliente y verificar que aparece en la lista
+- [x] **TEST:** Editar un cliente y verificar que se actualiza
+- [x] **TEST:** Eliminar un cliente y verificar que desaparece
+- [x] **TEST:** Probar búsqueda de clientes por nombre/documento
+- [x] **TEST:** Verificar validaciones de formulario (campos requeridos)
+- [x] **TEST:** Probar que no permite duplicar documentos
 
 ### 3.7 Desarrollo del Panel Administrativo - Gestión de Pedidos
 - [ ] Crear componente de listado de pedidos
